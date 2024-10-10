@@ -1,3 +1,4 @@
+
 "use client";
 import React from 'react';
 import { Leaf, Sun, Droplet, Users, ChevronDown } from 'lucide-react';
@@ -257,3 +258,4 @@ export default function HomePage() {
     </div>
   );
 }
+
