@@ -175,7 +175,7 @@ const ChallengesPage = () => {
                     </div>
                   </div>
                 </div>
-
+                {/* test islam */}
                 {/* Quick Stats */}
                 <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg transition-transform transform hover:scale-105">
                   <h3 className="text-xl font-semibold text-green-800 dark:text-green-300 mb-4">
