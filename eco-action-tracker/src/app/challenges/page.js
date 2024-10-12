@@ -1,5 +1,5 @@
 import EnhancedInteractiveText from "../../components/EnhancedInteractiveText";
-import ChallengeProgress from "../../components/ChallengeProgress";
+import KineticEnergyDashboard from "../../components/KineticEnergyDashboard";
 
 export default function Home() {
   return (
@@ -8,7 +8,7 @@ export default function Home() {
       <EnhancedInteractiveText />
 
       {/* Challenge Progress Component */}
-      <ChallengeProgress />
+      <KineticEnergyDashboard />
     </div>
   );
 }
