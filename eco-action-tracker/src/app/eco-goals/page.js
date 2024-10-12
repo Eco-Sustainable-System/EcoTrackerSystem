@@ -112,7 +112,7 @@ const EcoGoalManagementPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100 p-8 mt-[10rem] ">
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold text-blue-800 mb-2">
           Eco-Goal Management

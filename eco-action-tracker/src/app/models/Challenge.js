@@ -1,12 +1,61 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const challengeSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  type: { type: String, enum: ['personal', 'community'], default: 'personal' },
-  progress: { type: Number, default: 0 }, // Progress percentage
-  goal: { type: Number, required: true }, // Goal (e.g., number of bottles saved)
-  usersParticipating: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  targetEnergy: {
+    type: Number,
+    required: true,
+  },
+  currentEnergy: {
+    type: Number,
+    default: 0,
+  },
+  progress: {
+    type: Number,
+    default: 0,
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  startHour: {
+    type: String,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  endHour: {
+    type: String,
+    required: true,
+  },
+  thumbnail: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["active", "completed", "upcoming"],
+    default: "upcoming",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model('Challenge', challengeSchema);
+const Challenge =
+  mongoose.models.Challenges || mongoose.model("Challenges", challengeSchema);
+
+module.exports = Challenge;

@@ -53,6 +53,15 @@ const userSschema = new mongoose.Schema(
       // Custom reminders set by the user for motivation
       { type: String },
     ],
+    googleId: { type: String, unique: true },
+    bikes: [
+      // Custom reminders set by the user for motivation
+      { type: String },
+    ],
+    redeemedRewards: [
+      // Array of Reward IDs the user has redeemed
+      { type: ObjectId, ref: "Rewards" },
+    ],
   },
   { timestamps: true }
 );
