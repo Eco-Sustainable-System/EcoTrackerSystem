@@ -19,7 +19,7 @@ export default function Navbar() {
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <Link
             href="/register"
-            className="text-white bg-[#F35815] hover:bg-[#b75931] focus:ring-1 focus:outline-none focus:ring-[#b1552d] font-medium rounded-lg text-sm px-4 py-2 text-center"
+            className="text-white bg-[#fdb713] hover:bg-[#ffce5b] focus:ring-1 focus:outline-none focus:ring-[#ffd77a] font-medium rounded-lg text-sm px-4 py-2 text-center"
           >
             Sign Up
           </Link>
@@ -59,6 +59,11 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
+            </li>
+            <li>
+              <Link href="/challenges" className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#F35815] md:hover:bg-transparent md:hover:text-[#F35815] md:p-0">
+              Challenges
+              </Link>
             </li>
             <li>
               <Link href="/about" className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#F35815] md:hover:bg-transparent md:hover:text-[#F35815] md:p-0">
