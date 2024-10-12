@@ -2,15 +2,18 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SessionLayout from "@/components/SessionLayout"; // استيراد SessionLayout
+
 export default function RootLayout({ children }) {
-    return (
-      <html lang="en">
-        <body>
+  return (
+    <html lang="en">
+      <body>
+        <SessionLayout>
           <Navbar />
           {children}
           <Footer />
-        </body>
-      </html>
-    );
-
+        </SessionLayout>
+      </body>
+    </html>
+  );
 }

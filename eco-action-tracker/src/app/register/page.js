@@ -4,13 +4,15 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Wind, Sun, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import axios from "axios";
+import Swal from 'sweetalert2';
+import { signIn } from "next-auth/react";
 function SignUp() {
   const router = useRouter();
-
   const [FirstName, setFirstName] = useState("");
   const [LastName, setLastName] = useState("");
   const [FirstNameShowAndHide, setFirstNameShowAndHide] = useState("hidden");
   const [LastNameShowAndHide, setLastNameShowAndHide] = useState("hidden");
+  const [isLoading, setIsLoading] = useState(false);
 
   const [ValidationEmail, setValidationEmail] = useState("");
   const [EmailMessage, setEmailMessage] = useState("hidden");
@@ -51,19 +53,26 @@ function SignUp() {
   const [VerificationSendPassword, setVerificationSendPassword] = useState("hidden");
 
   const SubmitPassword = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W])(?=.*\S)(?!.*\s{2,})[A-Za-z\d\W_]{8,}$/.test(ValidationPassword);
-
+  const handleGoogleLogin = async () => {
+    const result = await signIn("google", { callbackUrl: "/", redirect: false });
+  
+    if (result?.error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: 'Something went wrong, please try again!',
+      });
+    }
+  };
+  
   async function sub() {
     if (FirstName === "") {
       setFirstNameShowAndHide("block");
       return;
-    } else {
-      setFirstNameShowAndHide("hidden");
     }
     if (LastName === "") {
       setLastNameShowAndHide("block");
       return;
-    } else {
-      setLastNameShowAndHide("hidden");
     }
     if (ValidationEmail === "" || Email_Message) {
       setEmailMessage("block");
@@ -72,48 +81,65 @@ function SignUp() {
     if (ValidationPassword === "" || !SubmitPassword) {
       setVerificationSendPassword("flex");
       return;
-    } else {
-      setVerificationSendPassword("hidden");
     }
-
+    setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/register",
-        {
-          firstName: FirstName,
-          lastName: LastName,
-          email: ValidationEmail,
-          password: ValidationPassword,
-        },
-        { withCredentials: true }
+          "http://localhost:3000/api/register",
+          {
+              firstName: FirstName,
+              lastName: LastName,
+              email: ValidationEmail,
+              password: ValidationPassword,
+          },
+          { withCredentials: true }
       );
-      console.log("Success: Form submitted");
-      router.push('/');
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        alert(error.response.data.message);
-      } else {
-        console.error("Error:", error.response ? error.response.data : error.message);
-      }
+
+      // Show success message
+      Swal.fire({
+          icon: 'success',
+          title: 'Registration Successful',
+          text: 'You have been registered successfully!',
+          timer: 1500, // Set timer to 1500 ms (1.5 seconds)
+          timerProgressBar: true, // Optional: show progress bar
+          showConfirmButton: false, // Hide confirm button
+      }).then(() => {
+          router.push('/'); // Redirect after message
+      });
+
+  } catch (error) {
+      console.error("Registration error:", error);
+
+      // Show error message with OK button
+      Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: error.response?.data?.message || 'An error occurred!',
+          confirmButtonText: 'OK', // Show OK button
+      });
+  }finally {
+
+      setIsLoading(false);
     }
   }
 
+
   return (
-    <div className="min-h-screen bg-[#f3ebbe] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#2D3134] flex items-center justify-center p-4">
       <div className="bg-[#FAF8ED] rounded-2xl shadow-2xl w-full max-w-md p-8 space-y-6">
         <div className="flex justify-center mb-6">
-          <Wind className="text-[#F35815] w-12 h-12 mr-2" />
-          <Sun className="text-[#ffc641] w-12 h-12" />
+          <Link href="/"><Wind className="text-[#fdb713] w-12 h-12 mr-2" /></Link>
+          <Link href="/"><Sun className="text-[#fdb713] w-12 h-12" /></Link>
         </div>
-        <h1 className="text-3xl font-bold text-center text-[#2D3134] mb-6">Join the Renewable Future</h1>
+        <h1 className="text-3xl font-bold text-center text-[#2D3134] mb-6">Join the Kinetic Revolution</h1>
         
-        <div className={`${NoArabic} items-center p-4 mb-4 text-sm text-[#F35815] rounded-lg bg-[#FAF8ED] border border-[#F35815]`} role="alert">
-          <AlertTriangle className="inline w-5 h-5 mr-2" />
+        <div className={`${NoArabic} items-center p-4 mb-4 text-sm text-[#2D3134] rounded-lg bg-[#FAF8ED] border border-[#fdb713]`} role="alert">
+          <AlertTriangle className="inline w-5 h-5 mr-2 text-[#fdb713]" />
           <span>Please use English characters for the password</span>
         </div>
 
-        <div className={`${VerificationSendPassword} items-center p-4 mb-4 text-sm text-[#F35815] rounded-lg bg-[#FAF8ED] border border-[#F35815]`} role="alert">
-          <AlertTriangle className="inline w-5 h-5 mr-2" />
+        <div className={`${VerificationSendPassword} items-center p-4 mb-4 text-sm text-[#2D3134] rounded-lg bg-[#FAF8ED] border border-[#fdb713]`} role="alert">
+          <AlertTriangle className="inline w-5 h-5 mr-2 text-[#fdb713]" />
           <span>Please enter the password according to the specified requirements</span>
         </div>
 
@@ -127,10 +153,10 @@ function SignUp() {
               }}
               type="text"
               id="First_Name"
-              className="w-full px-3 py-2 bg-[#FDFEFF] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F35815]"
+              className="w-full px-3 py-2 bg-[#FAF8ED] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#fdb713]"
               placeholder="Enter your first name"
             />
-            <p className={`${FirstNameShowAndHide} mt-2 text-sm text-[#F35815]`}>Please enter your first name</p>
+            <p className={`${FirstNameShowAndHide} mt-2 text-sm text-[#fdb713]`}>Please enter your first name</p>
           </div>
 
           <div>
@@ -142,10 +168,10 @@ function SignUp() {
               }}
               type="text"
               id="Last_Name"
-              className="w-full px-3 py-2 bg-[#FDFEFF] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F35815]"
+              className="w-full px-3 py-2 bg-[#FAF8ED] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#fdb713]"
               placeholder="Enter your last name"
             />
-            <p className={`${LastNameShowAndHide} mt-2 text-sm text-[#F35815]`}>Please enter your last name</p>
+            <p className={`${LastNameShowAndHide} mt-2 text-sm text-[#fdb713]`}>Please enter your last name</p>
           </div>
 
           <div>
@@ -154,10 +180,10 @@ function SignUp() {
               onChange={(e) => setValidationEmail(e.target.value)}
               type="email"
               id="Email"
-              className="w-full px-3 py-2 bg-[#FDFEFF] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F35815]"
+              className="w-full px-3 py-2 bg-[#FAF8ED] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#fdb713]"
               placeholder="Enter your email"
             />
-            <p className={`${EmailMessage} mt-2 text-sm text-[#F35815]`}>Invalid email address</p>
+            <p className={`${EmailMessage} mt-2 text-sm text-[#fdb713]`}>Invalid email address</p>
           </div>
 
           <div>
@@ -167,7 +193,7 @@ function SignUp() {
                 onChange={(e) => setValidationPassword(e.target.value)}
                 type={ShowPassword ? "text" : "password"}
                 id="Password"
-                className="w-full px-3 py-2 bg-[#FDFEFF] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#F35815]"
+                className="w-full px-3 py-2 bg-[#FAF8ED] border border-[#2D3134] rounded-md focus:outline-none focus:ring-2 focus:ring-[#fdb713]"
                 placeholder="Enter your password"
               />
               <button
@@ -188,18 +214,26 @@ function SignUp() {
 
           <button
             type="submit"
-            className="w-full py-3 px-4 bg-[#F35815] hover:bg-[#E34805] text-[#FDFEFF] font-bold rounded-md transition duration-200 transform hover:scale-105"
+            onClick={sub}
+            className={`w-full px-4 py-2 font-bold text-white bg-[#fdb713] rounded-md focus:outline-none focus:ring-2 focus:ring-[#fdb713] transition-all duration-300 hover:bg-opacity-70 ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={isLoading}
           >
-            Create Account
+            {isLoading ? "Loading..." : "Create Account"}
           </button>
         </form>
-
+        <button
+        onClick={handleGoogleLogin}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      >
+        تسجيل الدخول باستخدام Google
+      </button>
         <p className="text-center text-[#2D3134] text-sm">
           Already have an account?{" "}
-          <Link href="/login" className="text-[#F35815] hover:underline font-semibold">
+          <Link href="/login" className="text-[#fdb713] hover:underline font-semibold">
             Log In
           </Link>
         </p>
+
       </div>
     </div>
   );
