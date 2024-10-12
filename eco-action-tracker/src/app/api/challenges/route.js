@@ -50,8 +50,15 @@ export async function GET(req) {
       });
     }
   } catch (error) {
+    // Differentiate between 404 and other errors
+    if (error.message === "Challenge not found") {
+      return new Response(JSON.stringify({ message: error.message }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify({ message: error.message }), {
-      status: 404,
+      status: 500,
       headers: { "Content-Type": "application/json" },
     });
   }

@@ -1,7 +1,7 @@
-const JoiningChallenge = require("@/app/models/JoiningChallenge");
+import JoiningChallenge from "@/app/models/JoiningChallenge"; // Ensure this path is correct
 
 // Function to create a new joining challenge
-const createJoiningChallenge = async (challengeData) => {
+export const createJoiningChallenge = async (challengeData) => {
   const joiningChallenge = new JoiningChallenge(challengeData);
   try {
     const savedChallenge = await joiningChallenge.save();
@@ -12,7 +12,8 @@ const createJoiningChallenge = async (challengeData) => {
 };
 
 // Function to get all joining challenges
-const getAllJoiningChallenges = async () => {
+export const getAllJoiningChallenges = async () => {
+  // Exporting the function
   try {
     const challenges = await JoiningChallenge.find({})
       .populate("userId")
@@ -25,7 +26,8 @@ const getAllJoiningChallenges = async () => {
 };
 
 // Function to get a joining challenge by ID
-const getJoiningChallengeById = async (id) => {
+export const getJoiningChallengeById = async (id) => {
+  // Exporting the function
   try {
     const challenge = await JoiningChallenge.findById(id)
       .populate("userId")
@@ -41,7 +43,8 @@ const getJoiningChallengeById = async (id) => {
 };
 
 // Function to update a joining challenge
-const updateJoiningChallenge = async (id, challengeData) => {
+export const updateJoiningChallenge = async (id, challengeData) => {
+  // Exporting the function
   try {
     const updatedChallenge = await JoiningChallenge.findByIdAndUpdate(
       id,
@@ -61,7 +64,8 @@ const updateJoiningChallenge = async (id, challengeData) => {
 };
 
 // Function to delete a joining challenge
-const deleteJoiningChallenge = async (id) => {
+export const deleteJoiningChallenge = async (id) => {
+  // Exporting the function
   try {
     const deletedChallenge = await JoiningChallenge.findByIdAndDelete(id);
     if (!deletedChallenge) {
@@ -71,12 +75,4 @@ const deleteJoiningChallenge = async (id) => {
   } catch (error) {
     throw new Error(`Error deleting joining challenge: ${error.message}`);
   }
-};
-
-module.exports = {
-  createJoiningChallenge,
-  getAllJoiningChallenges,
-  getJoiningChallengeById,
-  updateJoiningChallenge,
-  deleteJoiningChallenge,
 };

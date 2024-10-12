@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Define the joiningChallenge schema
 const joiningChallengeSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,4 +36,8 @@ const joiningChallengeSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("JoiningChallenge", joiningChallengeSchema);
+const JoiningChallenge =
+  mongoose.models.JoiningChallenge ||
+  mongoose.model("JoiningChallenge", joiningChallengeSchema);
+
+module.exports = JoiningChallenge;

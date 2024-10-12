@@ -6,13 +6,42 @@ import {
   updateJoiningChallenge,
   deleteJoiningChallenge,
 } from "@/lib/joiningChallengeController";
+import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   await dbConnect();
-  const challengeData = await req.json();
+
+  // Get the token from the Authorization header
+  const token = req.headers.get("Authorization")?.split(" ")[1];
+
+  if (!token) {
+    return new Response(JSON.stringify({ message: "No token provided" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   try {
+    // Verify the token and decode it
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    console.log("Decoded Token:", decoded); // Log the decoded token
+
+    // Ensure the userId is present in the decoded token
+    const userId = decoded.id; // Assuming userId is in the token payload
+    if (!userId) {
+      throw new Error("Invalid token: userId not found");
+    }
+
+    // Parse the request body for challenge data
+    const challengeData = await req.json();
+    challengeData.userId = userId; // Set userId from the token payload
+
+    console.log("Challenge Data:", challengeData); // Log the challenge data
+
+    // Create the joining challenge
     const challenge = await createJoiningChallenge(challengeData);
+
+    // Return a success response
     return new Response(
       JSON.stringify({
         message: "Joining challenge created successfully",
@@ -24,6 +53,7 @@ export async function POST(req) {
       }
     );
   } catch (error) {
+    console.error("Error:", error); // Log any error
     return new Response(JSON.stringify({ message: error.message }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
