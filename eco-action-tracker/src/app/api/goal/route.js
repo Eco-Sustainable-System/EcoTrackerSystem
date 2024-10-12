@@ -1,19 +1,35 @@
-import dbConnect from "@/lib/mongodb"; // Adjust the import path if necessary
+import dbConnect from "@/lib/mongodb";
 import {
   createGoal,
   getUserGoals,
   getGoalById,
   updateGoal,
   deleteGoal,
-} from "@/lib/goalController"; // Adjust the import path if necessary
+} from "@/lib/goalController";
+import jwt from "jsonwebtoken";
 
-// Function to handle POST requests for creating a new goal
 export async function POST(req) {
   await dbConnect();
   const goalData = await req.json();
 
+  const token = req.headers.get("Authorization")?.split(" ")[1];
+
+  if (!token) {
+    return new Response(
+      JSON.stringify({ message: "Authorization token is missing" }),
+      {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+  }
+
   try {
-    const goal = await createGoal(goalData);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const userId = decoded.id;
+
+    const goal = await createGoal({ ...goalData, userId });
+
     return new Response(
       JSON.stringify({ message: "Goal created successfully", goal }),
       {
