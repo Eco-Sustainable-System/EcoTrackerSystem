@@ -2,7 +2,20 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname } from "next/navigation";
+import axios from 'axios';
 export default function Navbar() {
+
+  // async function fetchData() {
+  //   try {
+  //     const response = await axios.get('http://localhost:3000/api/users',{ withCredentials: true });
+  //     console.log(response.data); // طباعة البيانات في وحدة التحكم
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error); // طباعة الخطأ إذا حدث
+  //   }
+  // }
+  
+  // // استدعاء الدالة لجلب البيانات
+  // fetchData();
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 

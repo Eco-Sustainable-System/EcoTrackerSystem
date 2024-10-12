@@ -5,6 +5,8 @@ import { Wind, Sun, AlertTriangle, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import GoogleButton from "@/components/GoogleButton";
+
 function LogIn() {
   const [ValidationEmail, setValidationEmail] = useState("");
   const [ValidationPassword, setValidationPassword] = useState("");
@@ -146,6 +148,7 @@ function LogIn() {
             Log In
           </button>
         </form>
+        <GoogleButton/>
 
         <p className="text-center text-[#2D3134] text-sm">
           Don't have an account?{" "}
