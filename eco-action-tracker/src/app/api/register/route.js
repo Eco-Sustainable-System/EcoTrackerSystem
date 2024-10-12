@@ -56,18 +56,3 @@ export async function POST(req) {
     );
   }
 }
-
-// export async function GET() {
-//   try {
-//     await dbConnect();
-//     const users = await User.find({});
-
-//     return NextResponse.json(users);
-//   } catch (error) {
-//     console.error("Error fetching users:", error);
-//     return NextResponse.json(
-//       { error: "Failed to fetch users" },
-//       { status: 500 }
-//     );
-//   }
-// }

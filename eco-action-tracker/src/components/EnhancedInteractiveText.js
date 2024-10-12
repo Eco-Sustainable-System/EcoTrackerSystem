@@ -30,13 +30,13 @@ export default function EnhancedInteractiveText() {
     };
   }, []);
 
-  const letters = ["E", "C", "O"];
-  const colors = ["#2ecc71", "#27ae60", "#1abc9c"];
+  const letters = ["K", "E"]; // Changed letters to represent Kinetic Energy
+  const colors = ["#f39c12", "#e67e22"]; // Colors representing energy and motion
 
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-full bg-gradient-to-br from-green-400 to-green-700 overflow-hidden"
+      className="relative h-screen w-full bg-gradient-to-br from-yellow-400 to-orange-600 overflow-hidden"
     >
       <ThreeScene />
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -47,15 +47,18 @@ export default function EnhancedInteractiveText() {
               className="text-9xl font-extrabold"
               style={{
                 color: colors[index],
-                textShadow: "0 0 10px rgba(255,255,255,0.5)",
+                textShadow: "0 0 20px rgba(255,255,255,0.7)",
               }}
               animate={{
                 x: mousePosition.x * 50 - 25,
                 y: mousePosition.y * 50 - 25,
                 rotateY: mousePosition.x * 20 - 10,
                 rotateX: -mousePosition.y * 20 + 10,
+                scale: [1, 1.2, 1],
               }}
               transition={{ type: "spring", stiffness: 150, damping: 15 }}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.95 }}
             >
               {letter}
             </motion.div>
@@ -67,7 +70,7 @@ export default function EnhancedInteractiveText() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          Challenge Page
+          Kinetic Energy Challenge
         </motion.h1>
         <motion.p
           className="text-2xl text-white text-center max-w-2xl"
@@ -75,18 +78,18 @@ export default function EnhancedInteractiveText() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
         >
-          Embark on eco-friendly challenges and make a positive impact on our
-          planet. Every action counts!
+          Join the movement! Discover how kinetic energy powers our world. Every
+          step you take counts towards a sustainable future!
         </motion.p>
         <motion.button
-          className="mt-8 px-6 py-3 bg-white text-green-700 rounded-full text-xl font-semibold hover:bg-green-100 transition-colors duration-300"
+          className="mt-8 px-6 py-3 bg-white text-yellow-700 rounded-full text-xl font-semibold hover:bg-yellow-100 transition-colors duration-300"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          Start Challenge
+          Start the Challenge
         </motion.button>
       </div>
     </div>

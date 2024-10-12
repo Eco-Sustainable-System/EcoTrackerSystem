@@ -4,8 +4,7 @@ import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { Wind, Sun, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import axios from "axios";
-import Swal from 'sweetalert2';
-import { signIn } from "next-auth/react";
+import GoogleButton from "@/components/GoogleButton";
 function SignUp() {
   const router = useRouter();
   const [FirstName, setFirstName] = useState("");
@@ -221,12 +220,7 @@ function SignUp() {
             {isLoading ? "Loading..." : "Create Account"}
           </button>
         </form>
-        <button
-        onClick={handleGoogleLogin}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-      >
-        تسجيل الدخول باستخدام Google
-      </button>
+        <GoogleButton/>
         <p className="text-center text-[#2D3134] text-sm">
           Already have an account?{" "}
           <Link href="/login" className="text-[#fdb713] hover:underline font-semibold">
