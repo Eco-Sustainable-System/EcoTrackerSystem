@@ -1,82 +1,104 @@
 const EnergyLog = require("@/app/models/EnergyLog");
+const Challenge = require("@/app/models/Challenge");
 
-// Function to create a new energy log
+const updateCurrentEnergy = async (challengeId) => {
+  try {
+    const energyLogs = await EnergyLog.find({
+      associatedChallenge: challengeId,
+    });
+
+    const totalEnergyGenerated = energyLogs.reduce((total, log) => {
+      return total + log.energyGenerated;
+    }, 0);
+
+    const updatedChallenge = await Challenge.findByIdAndUpdate(
+      challengeId,
+      { currentEnergy: totalEnergyGenerated },
+      { new: true }
+    );
+
+    if (!updatedChallenge) {
+      console.error(`Challenge not found for ID ${challengeId}`);
+      return;
+    }
+
+    console.log(
+      `Current energy updated for challenge ID ${challengeId}: ${totalEnergyGenerated}`
+    );
+
+    // Call updateProgress to update progress
+    await updateProgress(challengeId);
+  } catch (error) {
+    console.error(
+      `Error updating current energy for challenge ID ${challengeId}:`,
+      error.message
+    );
+  }
+};
+
+const updateProgress = async (challengeId) => {
+  try {
+    const challenge = await Challenge.findById(challengeId);
+    if (!challenge) {
+      console.error(`Challenge not found for ID ${challengeId}`);
+      return;
+    }
+
+    const { currentEnergy, targetEnergy } = challenge;
+
+    console.log(`Calculating progress for challenge ID ${challengeId}:`);
+    console.log(
+      `Current Energy: ${currentEnergy}, Target Energy: ${targetEnergy}`
+    );
+
+    if (targetEnergy === 0) {
+      console.warn(
+        `Target energy is zero for challenge ID ${challengeId}. Setting progress to 0.`
+      );
+      await Challenge.findByIdAndUpdate(
+        challengeId,
+        { progress: 0 },
+        { new: true }
+      );
+      return;
+    }
+
+    const progress = (currentEnergy / targetEnergy) * 100;
+
+    console.log(`Progress calculated: ${progress}%`);
+
+    const updatedChallenge = await Challenge.findByIdAndUpdate(
+      challengeId,
+      { progress },
+      { new: true }
+    );
+
+    console.log(
+      `Progress updated for challenge ID ${challengeId}: ${updatedChallenge.progress}`
+    );
+  } catch (error) {
+    console.error(
+      `Error updating progress for challenge ID ${challengeId}:`,
+      error.message
+    );
+  }
+};
+
 const createEnergyLog = async (energyLogData) => {
   const energyLog = new EnergyLog(energyLogData);
   try {
-    const savedEnergyLog = await energyLog.save();
-    return savedEnergyLog;
+    const savedLog = await energyLog.save();
+
+    await updateCurrentEnergy(savedLog.associatedChallenge);
+
+    return savedLog;
   } catch (error) {
+    console.error(`Error creating energy log: ${error.message}`);
     throw new Error(`Error creating energy log: ${error.message}`);
-  }
-};
-
-// Function to get all energy logs
-const getAllEnergyLogs = async () => {
-  try {
-    const energyLogs = await EnergyLog.find({})
-      .populate("userId", "name") // Assuming there's a 'name' field in the Users collection
-      .populate("bikeId", "model") // Assuming there's a 'model' field in the Bikes collection
-      .populate("associatedChallenge", "title"); // Assuming there's a 'title' field in the Challenges collection
-    return energyLogs;
-  } catch (error) {
-    throw new Error(`Error fetching energy logs: ${error.message}`);
-  }
-};
-
-// Function to get an energy log by ID
-const getEnergyLogById = async (id) => {
-  try {
-    const energyLog = await EnergyLog.findById(id)
-      .populate("userId", "name")
-      .populate("bikeId", "model")
-      .populate("associatedChallenge", "title");
-    if (!energyLog) {
-      throw new Error("Energy log not found");
-    }
-    return energyLog;
-  } catch (error) {
-    throw new Error(`Error fetching energy log: ${error.message}`);
-  }
-};
-
-// Function to update an energy log
-const updateEnergyLog = async (id, energyLogData) => {
-  try {
-    const updatedEnergyLog = await EnergyLog.findByIdAndUpdate(
-      id,
-      energyLogData,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    if (!updatedEnergyLog) {
-      throw new Error("Energy log not found");
-    }
-    return updatedEnergyLog;
-  } catch (error) {
-    throw new Error(`Error updating energy log: ${error.message}`);
-  }
-};
-
-// Function to delete an energy log
-const deleteEnergyLog = async (id) => {
-  try {
-    const deletedEnergyLog = await EnergyLog.findByIdAndDelete(id);
-    if (!deletedEnergyLog) {
-      throw new Error("Energy log not found");
-    }
-    return deletedEnergyLog;
-  } catch (error) {
-    throw new Error(`Error deleting energy log: ${error.message}`);
   }
 };
 
 module.exports = {
   createEnergyLog,
-  getAllEnergyLogs,
-  getEnergyLogById,
-  updateEnergyLog,
-  deleteEnergyLog,
+  updateCurrentEnergy,
 };

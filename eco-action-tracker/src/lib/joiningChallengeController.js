@@ -1,6 +1,5 @@
-import JoiningChallenge from "@/app/models/JoiningChallenge"; // Ensure this path is correct
+import JoiningChallenge from "@/app/models/JoiningChallenge";
 
-// Function to create a new joining challenge
 export const createJoiningChallenge = async (challengeData) => {
   const joiningChallenge = new JoiningChallenge(challengeData);
   try {
@@ -11,9 +10,7 @@ export const createJoiningChallenge = async (challengeData) => {
   }
 };
 
-// Function to get all joining challenges
 export const getAllJoiningChallenges = async () => {
-  // Exporting the function
   try {
     const challenges = await JoiningChallenge.find({})
       .populate("userId")
@@ -25,9 +22,7 @@ export const getAllJoiningChallenges = async () => {
   }
 };
 
-// Function to get a joining challenge by ID
 export const getJoiningChallengeById = async (id) => {
-  // Exporting the function
   try {
     const challenge = await JoiningChallenge.findById(id)
       .populate("userId")
@@ -42,9 +37,7 @@ export const getJoiningChallengeById = async (id) => {
   }
 };
 
-// Function to update a joining challenge
 export const updateJoiningChallenge = async (id, challengeData) => {
-  // Exporting the function
   try {
     const updatedChallenge = await JoiningChallenge.findByIdAndUpdate(
       id,
@@ -63,9 +56,7 @@ export const updateJoiningChallenge = async (id, challengeData) => {
   }
 };
 
-// Function to delete a joining challenge
 export const deleteJoiningChallenge = async (id) => {
-  // Exporting the function
   try {
     const deletedChallenge = await JoiningChallenge.findByIdAndDelete(id);
     if (!deletedChallenge) {
@@ -74,5 +65,21 @@ export const deleteJoiningChallenge = async (id) => {
     return deletedChallenge;
   } catch (error) {
     throw new Error(`Error deleting joining challenge: ${error.message}`);
+  }
+};
+
+export const getUsersByChallengeId = async (challengeId) => {
+  try {
+    const users = await JoiningChallenge.find({ challengeId })
+      .populate("userId")
+      .populate("bikeId");
+
+    const userCount = users.length;
+
+    return { users, userCount };
+  } catch (error) {
+    throw new Error(
+      `Error fetching users for challenge ID ${challengeId}: ${error.message}`
+    );
   }
 };

@@ -15,6 +15,14 @@ const energyLogSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  distance: {
+    type: Number,
+    required: true,
+  },
+  currentSpeed: {
+    type: Number,
+    required: true,
+  },
   timestamp: {
     type: Date,
     default: Date.now,
@@ -25,4 +33,5 @@ const energyLogSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("EnergyLog", energyLogSchema);
+module.exports =
+  mongoose.models.EnergyLog || mongoose.model("EnergyLog", energyLogSchema);

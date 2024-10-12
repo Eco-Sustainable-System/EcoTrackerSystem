@@ -7,6 +7,7 @@ import {
   getChallengeById,
   updateChallenge,
   deleteChallenge,
+  updateProgress,
 } from "@/lib/challengeController";
 
 export async function POST(req) {
@@ -112,3 +113,38 @@ export async function DELETE(req) {
     });
   }
 }
+
+const updateCurrentEnergy = async (challengeId) => {
+  try {
+    const energyLogs = await EnergyLog.find({
+      associatedChallenge: challengeId,
+    });
+
+    const totalEnergyGenerated = energyLogs.reduce((total, log) => {
+      return total + log.energyGenerated;
+    }, 0);
+
+    const updatedChallenge = await Challenge.findByIdAndUpdate(
+      challengeId,
+      { currentEnergy: totalEnergyGenerated },
+      { new: true }
+    );
+
+    if (!updatedChallenge) {
+      console.error(`Challenge not found for ID ${challengeId}`);
+      return;
+    }
+
+    console.log(
+      `Current energy updated for challenge ID ${challengeId}: ${totalEnergyGenerated}`
+    );
+
+    // Update progress after current energy has been updated
+    await updateProgress(challengeId);
+  } catch (error) {
+    console.error(
+      `Error updating current energy for challenge ID ${challengeId}:`,
+      error.message
+    );
+  }
+};
