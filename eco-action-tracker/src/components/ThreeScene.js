@@ -15,6 +15,10 @@ const ThreeScene = () => {
 
       const init = () => {
         scene = new THREE.Scene();
+
+        // Set a dark background color
+        scene.background = new THREE.Color(0x1c1c1c);
+
         camera = new THREE.PerspectiveCamera(
           75,
           window.innerWidth / window.innerHeight,
@@ -27,6 +31,7 @@ const ThreeScene = () => {
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
+        // Create geometry and add particles
         geometry = new THREE.BufferGeometry();
         const vertices = [];
 
@@ -42,9 +47,10 @@ const ThreeScene = () => {
           new THREE.Float32BufferAttribute(vertices, 3)
         );
 
+        // Change particle color to white and randomize size
         material = new THREE.PointsMaterial({
-          color: 0x2ecc71,
-          size: 2,
+          color: 0xffffff, // White color
+          size: Math.random() * 2 + 1, // Random size between 1 and 3
           transparent: true,
           opacity: 0.8,
         });
@@ -53,12 +59,26 @@ const ThreeScene = () => {
         scene.add(particles);
 
         camera.position.z = 1000;
+
+        // Add ambient light for better visibility
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Soft white light
+        scene.add(ambientLight);
       };
 
       const animate = () => {
         requestAnimationFrame(animate);
-        particles.rotation.x += 0.0005;
-        particles.rotation.y += 0.0005;
+
+        // Enhance particle movement
+        particles.rotation.x += 0.001; // Increase rotation speed
+        particles.rotation.y += 0.001;
+
+        // Optionally animate scaling for a pulsating effect
+        particles.scale.set(
+          1 + Math.sin(Date.now() * 0.001) * 0.1, // Pulsate scale
+          1 + Math.sin(Date.now() * 0.001) * 0.1,
+          1
+        );
+
         renderer.render(scene, camera);
       };
 
