@@ -1,8 +1,16 @@
-
 "use client";
-import React from 'react';
-import { Leaf, Sun, Droplet, Users, ChevronDown } from 'lucide-react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from "react";
+import { Leaf, Sun, Droplet, Users, ChevronDown } from "lucide-react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const carbonData = [
   { year: 2018, emissions: 10 },
@@ -17,7 +25,10 @@ export default function HomePage() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section
+        id="home"
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://source.unsplash.com/1920x1080/?sustainable,environment"
@@ -31,7 +42,8 @@ export default function HomePage() {
               Sustainable Living
             </h1>
             <p className="text-xl text-gray-800 max-w-2xl mx-auto mb-8">
-              Creating a better future through eco-friendly practices and sustainable living solutions.
+              Creating a better future through eco-friendly practices and
+              sustainable living solutions.
             </p>
             <button className="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition-all transform hover:scale-105">
               Learn More
@@ -42,7 +54,10 @@ export default function HomePage() {
       </section>
 
       {/* Sustainable Living Section */}
-      <section id="sustainable" className="min-h-screen flex items-center py-20 relative">
+      <section
+        id="sustainable"
+        className="min-h-screen flex items-center py-20 relative"
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://source.unsplash.com/1920x1080/?eco,friendly"
@@ -58,11 +73,17 @@ export default function HomePage() {
                 Sustainable Living Solutions
               </h2>
               <p className="text-gray-700 mb-6">
-                Discover practical ways to reduce your environmental impact and live more sustainably.
-                Our comprehensive guide helps you make eco-friendly choices in your daily life.
+                Discover practical ways to reduce your environmental impact and
+                live more sustainably. Our comprehensive guide helps you make
+                eco-friendly choices in your daily life.
               </p>
               <ul className="space-y-4">
-                {['Reduce waste', 'Eco-friendly products', 'Sustainable practices', 'Green living tips'].map((item) => (
+                {[
+                  "Reduce waste",
+                  "Eco-friendly products",
+                  "Sustainable practices",
+                  "Green living tips",
+                ].map((item) => (
                   <li key={item} className="flex items-center space-x-2">
                     <Leaf className="w-5 h-5 text-green-500" />
                     <span>{item}</span>
@@ -82,7 +103,10 @@ export default function HomePage() {
       </section>
 
       {/* Energy Section */}
-      <section id="energy" className="min-h-screen flex items-center py-20 relative">
+      <section
+        id="energy"
+        className="min-h-screen flex items-center py-20 relative"
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://source.unsplash.com/1920x1080/?renewable,energy"
@@ -94,13 +118,15 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1 animate-slideInLeft">
               <div className="bg-white bg-opacity-90 rounded-lg p-8 shadow-lg">
-                <h3 className="text-2xl font-bold mb-4">Energy Efficiency Stats</h3>
+                <h3 className="text-2xl font-bold mb-4">
+                  Energy Efficiency Stats
+                </h3>
                 <div className="space-y-4">
                   {[
-                    { label: 'Solar Energy', value: '40%' },
-                    { label: 'Wind Power', value: '35%' },
-                    { label: 'Hydroelectric', value: '15%' },
-                    { label: 'Other Renewable', value: '10%' },
+                    { label: "Solar Energy", value: "40%" },
+                    { label: "Wind Power", value: "35%" },
+                    { label: "Hydroelectric", value: "15%" },
+                    { label: "Other Renewable", value: "10%" },
                   ].map((stat) => (
                     <div key={stat.label} className="relative pt-1">
                       <div className="flex mb-2 items-center justify-between">
@@ -137,8 +163,9 @@ export default function HomePage() {
                 Renewable Energy
               </h2>
               <p className="text-gray-700">
-                Harness the power of renewable energy sources for a cleaner future.
-                Learn about solar, wind, and other sustainable energy solutions.
+                Harness the power of renewable energy sources for a cleaner
+                future. Learn about solar, wind, and other sustainable energy
+                solutions.
               </p>
             </div>
           </div>
@@ -146,7 +173,10 @@ export default function HomePage() {
       </section>
 
       {/* Water Conservation Section */}
-      <section id="water" className="min-h-screen flex items-center py-20 relative">
+      <section
+        id="water"
+        className="min-h-screen flex items-center py-20 relative"
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://source.unsplash.com/1920x1080/?water,conservation"
@@ -162,11 +192,17 @@ export default function HomePage() {
                 Water Conservation
               </h2>
               <p className="text-gray-700 mb-6">
-                Discover innovative ways to conserve water and protect this precious resource.
-                From rainwater harvesting to efficient appliances, every drop counts.
+                Discover innovative ways to conserve water and protect this
+                precious resource. From rainwater harvesting to efficient
+                appliances, every drop counts.
               </p>
               <ul className="space-y-4">
-                {['Rainwater harvesting', 'Low-flow fixtures', 'Xeriscaping', 'Greywater systems'].map((item) => (
+                {[
+                  "Rainwater harvesting",
+                  "Low-flow fixtures",
+                  "Xeriscaping",
+                  "Greywater systems",
+                ].map((item) => (
                   <li key={item} className="flex items-center space-x-2">
                     <Droplet className="w-5 h-5 text-blue-500" />
                     <span>{item}</span>
@@ -186,7 +222,10 @@ export default function HomePage() {
       </section>
 
       {/* Community Engagement Section */}
-      <section id="community" className="min-h-screen flex items-center py-20 relative">
+      <section
+        id="community"
+        className="min-h-screen flex items-center py-20 relative"
+      >
         <div className="absolute inset-0 z-0">
           <img
             src="https://source.unsplash.com/1920x1080/?community,engagement"
@@ -202,11 +241,17 @@ export default function HomePage() {
                 Community Engagement
               </h2>
               <p className="text-gray-700 mb-6">
-                Join forces with your community to create lasting change. Discover local initiatives,
-                volunteer opportunities, and ways to make a collective impact.
+                Join forces with your community to create lasting change.
+                Discover local initiatives, volunteer opportunities, and ways to
+                make a collective impact.
               </p>
               <ul className="space-y-4">
-                {['Local clean-ups', 'Community gardens', 'Eco-workshops', 'Green initiatives'].map((item) => (
+                {[
+                  "Local clean-ups",
+                  "Community gardens",
+                  "Eco-workshops",
+                  "Green initiatives",
+                ].map((item) => (
                   <li key={item} className="flex items-center space-x-2">
                     <Users className="w-5 h-5 text-yellow-500" />
                     <span>{item}</span>
@@ -224,7 +269,12 @@ export default function HomePage() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="emissions" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line
+                      type="monotone"
+                      dataKey="emissions"
+                      stroke="#8884d8"
+                      activeDot={{ r: 8 }}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
                 <p className="text-sm text-gray-600 mt-4">
@@ -246,9 +296,12 @@ export default function HomePage() {
           />
         </div>
         <div className="container mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl font-bold mb-6">Join the Sustainable Living Movement</h2>
+          <h2 className="text-4xl font-bold mb-6">
+            Join the Sustainable Living Movement
+          </h2>
           <p className="text-xl mb-8">
-            Together, we can make a difference. Start your journey towards a more sustainable lifestyle today.
+            Together, we can make a difference. Start your journey towards a
+            more sustainable lifestyle today.
           </p>
           <button className="bg-white text-green-600 px-8 py-3 rounded-lg hover:bg-green-100 transition-all transform hover:scale-105">
             Get Started Now
@@ -258,4 +311,3 @@ export default function HomePage() {
     </div>
   );
 }
-
