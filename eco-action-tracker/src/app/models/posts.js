@@ -65,6 +65,6 @@ const postSchema = new mongoose.Schema({
     comments: [commentSchema] // Embed the Comment Schema
 }, { timestamps: true });
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
 
 module.exports = Post; 

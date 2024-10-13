@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Search, Battery, CornerDownRight, ImageIcon, Award, Zap, Send, Bike, BarChart2, ThumbsUp, MessageSquare, Share2, Users, Calendar, Bookmark, MoreHorizontal, Sun, Moon, ChevronUp } from 'lucide-react';
+import axios from 'axios';
 
 const EcoGymEnergyPage = ({ user, posts }) => {
     const [energyGenerated, setEnergyGenerated] = useState(0);
@@ -10,6 +11,9 @@ const EcoGymEnergyPage = ({ user, posts }) => {
     const [newPostContent, setNewPostContent] = useState('');
     const [newComments, setNewComments] = useState({});
     const [newReplies, setNewReplies] = useState({});
+    const [newPostImage, setNewPostImage] = useState('');
+    const [showImageInput, setShowImageInput] = useState(false);
+
 
     // const [posts, setPosts] = useState([
     //     {
@@ -129,96 +133,148 @@ const EcoGymEnergyPage = ({ user, posts }) => {
         setIsDarkMode(!isDarkMode);
     };
 
-    console.log(posts);
 
-    const handleCreatePost = () => {
-        if (newPostContent.trim()) {
+
+    const handleCreatePost = async () => {
+        if (newPostContent.trim() || newPostImage.trim()) {
             const newPost = {
                 _id: new Date().getTime().toString(), // Temporary ID
                 user: user._id,
                 time: new Date().toISOString(),
                 content: newPostContent,
+                image: newPostImage,
                 likes: 0,
                 comments: [],
             };
-            setPosts([newPost, ...posts]);
+            // setPosts([newPost, ...posts]);
+
+            try {
+                const response = await axios.post("api/community/createPost", { newPostContent, newPostImage })
+                    .catch(err => { console.log(err) });
+            } catch (err) {
+                console.log(err);
+            }
+
             setNewPostContent('');
+            setNewPostImage('');
+            setShowImageInput(false);
+
+            // console.log("Content", newPostContent);
+            // console.log("Image", newPostImage);
         }
     };
 
-    const handleLikePost = (postId) => {
-        setPosts(posts.map(post =>
-            post._id.toString() === postId.toString() ? { ...post, likes: post.likes + 1 } : post
-        ));
-    };
+    const handleLikePost = async (postId) => {
+        // setPosts(posts.map(post =>
+        //     post._id.toString() === postId.toString() ? { ...post, likes: post.likes + 1 } : post
+        // ));
 
-    const handleAddComment = (postId) => {
-        if (newComments[postId]?.trim()) {
-            setPosts(posts.map(post =>
-                post._id.toString() === postId.toString() ? {
-                    ...post,
-                    comments: [...(post.comments || []), {
-                        _id: new Date().getTime().toString(), // Temporary ID
-                        user: user._id,
-                        content: newComments[postId],
-                        likes: 0,
-                        replies: [],
-                        time: new Date().toISOString()
-                    }]
-                } : post
-            ));
-            setNewComments({ ...newComments, [postId]: '' });
+        try {
+            const response = await axios.post("api/community/addLikePost", { postId })
+                .catch(err => { console.log(err) });
+        } catch (err) {
+            console.log(err);
         }
     };
 
-    const handleLikeComment = (postId, commentId) => {
-        setPosts(posts.map(post =>
-            post._id.toString() === postId.toString() ? {
-                ...post,
-                comments: post.comments.map(comment =>
-                    comment._id.toString() === commentId.toString() ? { ...comment, likes: comment.likes + 1 } : comment
-                )
-            } : post
-        ));
+    const handleAddComment = async (postId) => {
+        // if (newComments[postId]?.trim()) {
+        //     setPosts(posts.map(post =>
+        //         post._id.toString() === postId.toString() ? {
+        //             ...post,
+        //             comments: [...(post.comments || []), {
+        //                 _id: new Date().getTime().toString(), // Temporary ID
+        //                 user: user._id,
+        //                 content: newComments[postId],
+        //                 likes: 0,
+        //                 replies: [],
+        //                 time: new Date().toISOString()
+        //             }]
+        //         } : post
+        //     ));
+        //     setNewComments({ ...newComments, [postId]: '' });
+        // }
+
+        try {
+            const response = await axios.post("api/community/addComment", { postId, newComments })
+                .catch(err => { console.log(err) });
+        } catch (err) {
+            console.log(err);
+        }
+
+        setNewComments("");
     };
 
-    const handleAddReply = (postId, commentId) => {
-        if (newReplies[`${postId}-${commentId}`]?.trim()) {
-            setPosts(posts.map(post =>
-                post._id.toString() === postId.toString() ? {
-                    ...post,
-                    comments: post.comments.map(comment =>
-                        comment._id.toString() === commentId.toString() ? {
-                            ...comment,
-                            replies: [...(comment.replies || []), {
-                                _id: new Date().getTime().toString(), // Temporary ID
-                                user: user._id,
-                                content: newReplies[`${postId}-${commentId}`],
-                                likes: 0,
-                                time: new Date().toISOString()
-                            }]
-                        } : comment
-                    )
-                } : post
-            ));
-            setNewReplies({ ...newReplies, [`${postId}-${commentId}`]: '' });
+    const handleLikeComment = async (postId, commentId) => {
+        // setPosts(posts.map(post =>
+        //     post._id.toString() === postId.toString() ? {
+        //         ...post,
+        //         comments: post.comments.map(comment =>
+        //             comment._id.toString() === commentId.toString() ? { ...comment, likes: comment.likes + 1 } : comment
+        //         )
+        //     } : post
+        // ));
+
+        try {
+            const response = await axios.post("api/community/addLikeComment", { postId, commentId })
+                .catch(err => { console.log(err) });
+        } catch (err) {
+            console.log(err);
         }
     };
 
-    const handleLikeReply = (postId, commentId, replyId) => {
-        setPosts(posts.map(post =>
-            post._id.toString() === postId.toString() ? {
-                ...post,
-                comments: post.comments.map(comment =>
-                    comment._id.toString() === commentId.toString() ? {
-                        ...comment,
-                        replies: comment.replies.map(reply =>
-                            reply._id.toString() === replyId.toString() ? { ...reply, likes: reply.likes + 1 } : reply
-                        )
-                    } : comment
-                )
-            } : post
-        ));
+    const handleAddReply = async (postId, commentId) => {
+        // if (newReplies[`${postId}-${commentId}`]?.trim()) {
+        //     setPosts(posts.map(post =>
+        //         post._id.toString() === postId.toString() ? {
+        //             ...post,
+        //             comments: post.comments.map(comment =>
+        //                 comment._id.toString() === commentId.toString() ? {
+        //                     ...comment,
+        //                     replies: [...(comment.replies || []), {
+        //                         _id: new Date().getTime().toString(), // Temporary ID
+        //                         user: user._id,
+        //                         content: newReplies[`${postId}-${commentId}`],
+        //                         likes: 0,
+        //                         time: new Date().toISOString()
+        //                     }]
+        //                 } : comment
+        //             )
+        //         } : post
+        //     ));
+        //     setNewReplies({ ...newReplies, [`${postId}-${commentId}`]: '' });
+        // }
+
+        try {
+            const response = await axios.post("api/community/addReply", { postId, commentId, newReplies })
+                .catch(err => { console.log(err) });
+        } catch (err) {
+            console.log(err);
+        }
+
+    };
+
+    const handleLikeReply = async (postId, commentId, replyId) => {
+        // setPosts(posts.map(post =>
+        //     post._id.toString() === postId.toString() ? {
+        //         ...post,
+        //         comments: post.comments.map(comment =>
+        //             comment._id.toString() === commentId.toString() ? {
+        //                 ...comment,
+        //                 replies: comment.replies.map(reply =>
+        //                     reply._id.toString() === replyId.toString() ? { ...reply, likes: reply.likes + 1 } : reply
+        //                 )
+        //             } : comment
+        //         )
+        //     } : post
+        // ));
+
+        try {
+            const response = await axios.post("api/community/addLikeReply", { postId, commentId, replyId })
+                .catch(err => { console.log(err) });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
 
@@ -230,7 +286,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
     }, []);
 
     return (
-        <div className={`min-h-screen flex flex-col ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-green-50 to-blue-50'}`}>
+        <div className={`min-h-screen mt-20 flex flex-col ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-green-50 to-blue-50'}`}>
             {/* Header */}
             {/* <header className="bg-green-600 text-white shadow-lg">
                 <div className="container mx-auto py-4 px-6">
@@ -300,7 +356,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                     {/* Create Post Section */}
                     <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-4`}>
                         <div className="flex items-center space-x-2 mb-4">
-                            <img src="https://i.pravatar.cc/150?img=12" alt="User" className="w-12 h-12 rounded-full" />
+                            <img src={user.picture} alt="User" className="w-12 h-12 rounded-full" />
                             <textarea
                                 value={newPostContent}
                                 onChange={(e) => setNewPostContent(e.target.value)}
@@ -309,10 +365,24 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                 rows="3"
                             />
                         </div>
+                        {showImageInput && (
+                            <div className="mb-4">
+                                <input
+                                    type="text"
+                                    value={newPostImage}
+                                    onChange={(e) => setNewPostImage(e.target.value)}
+                                    placeholder="Enter image URL..."
+                                    className={`w-full p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-400`}
+                                />
+                            </div>
+                        )}
                         <div className="flex justify-between items-center">
-                            <button className="flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors duration-300">
+                            <button
+                                onClick={() => setShowImageInput(!showImageInput)}
+                                className="flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors duration-300"
+                            >
                                 <ImageIcon size={20} />
-                                <span>Add Image</span>
+                                <span>{showImageInput ? 'Remove Image' : 'Add Image'}</span>
                             </button>
                             <button
                                 onClick={handleCreatePost}
@@ -419,8 +489,8 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                                     <input
                                                         id={`reply-input-${post._id}-${comment._id}`}
                                                         type="text"
-                                                        value={newReplies[`${post._id}-${comment._id}`] || ''}
-                                                        onChange={(e) => setNewReplies({ ...newReplies, [`${post._id}-${comment._id}`]: e.target.value })}
+                                                        // value={newReplies[`${post._id}-${comment._id}`] || ''}
+                                                        onChange={(e) => setNewReplies(e.target.value)}
                                                         placeholder="Write a reply..."
                                                         className={`flex-grow p-2 rounded-lg text-sm ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-green-400`}
                                                     />
@@ -439,8 +509,8 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                     <img src={user.picture} alt="User" className="w-8 h-8 rounded-full" />
                                     <input
                                         type="text"
-                                        value={newComments[post._id] || ''}
-                                        onChange={(e) => setNewComments({ ...newComments, [post._id]: e.target.value })}
+                                        // value={newComments[post._id] || ''}
+                                        onChange={(e) => setNewComments(e.target.value)}
                                         placeholder="Write a comment..."
                                         className={`flex-grow p-2 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'} focus:outline-none focus:ring-2 focus:ring-green-400`}
                                     />
