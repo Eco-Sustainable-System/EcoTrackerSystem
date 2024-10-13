@@ -1,14 +1,14 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Globe, TrendingUp, ChevronRight } from 'lucide-react';
+import { Zap, Globe, TrendingUp, ChevronRight, Linkedin, Github ,Mail } from 'lucide-react';
 
 const teamMembers = [
-  { name: "Abdallah Aljbour", role: "Scrum Master", image: "/api/placeholder/300/300" },
-  { name: "Abd-Alrahman Mansour Ata", role: "Product Owner", image: "/api/placeholder/300/300" },
-  { name: "Islam Ismail", role: "QA", image: "/api/placeholder/300/300" },
-  { name: "AbdelRahman Alwabarneh", role: "Developer", image: "/api/placeholder/300/300" },
-  { name: "Mohammed Husban", role: "Developer", image: "/api/placeholder/300/300" }
+  { name: "Abdallah Aljbour", role: "Scrum Master", image: "https://png.pngtree.com/png-vector/20240204/ourlarge/pngtree-avatar-job-student-flat-portrait-of-man-png-image_11606888.png" },
+  { name: "Abd-Alrahman Mansour Ata", role: "Product Owner", image: "https://png.pngtree.com/element_our/png_detail/20181206/users-vector-icon-png_260862.jpg" },
+  { name: "Islam Ismail", role: "QA", image: "https://png.pngtree.com/png-clipart/20190904/original/pngtree-circular-pattern-user-cartoon-avatar-png-image_4492893.jpg" },
+  { name: "AbdelRahman Alwabarneh", role: "Developer", image: "https://cdn.discordapp.com/attachments/1250078577219600477/1295102147783819349/man-with-suit-tie-that-says-he-is-man_670382-378251-removebg-preview-removebg-preview.png?ex=670d6d5d&is=670c1bdd&hm=e7463cd10a49dbaf7c076c6a3d35a26e03af58e80f1501ed54678a13de86e57b&" },
+  { name: "Mohammed Husban", role: "Developer", image: "https://cdn.discordapp.com/attachments/1250078577219600477/1295101934587478039/image.png?ex=670d6d2b&is=670c1bab&hm=f76ddafac4aec55a14d939759faa9e1f822a727bc221fd3a3a33b296e310924a&" }
 ];
 
 const AboutUs = () => {
@@ -77,28 +77,45 @@ const AboutUs = () => {
       </section>
 
       {/* Team Section */}
-      <section className="container mx-auto py-16">
-        <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-center">
-          Our Visionary Team
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <section className="container mx-auto py-16 bg-[#FAF8ED]/5 rounded-3xl">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Our Visionary Team</h2>
+          <p className="text-[#FAF8ED]/80 max-w-2xl mx-auto">
+            Meet the innovators driving our mission to revolutionize energy production and create a sustainable future.
+          </p>
+        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="bg-[#FAF8ED]/5 rounded-2xl overflow-hidden 
-                hover:bg-[#FAF8ED]/10 transition-all shadow-lg"
+              className="bg-[#FAF8ED]/10 rounded-2xl overflow-hidden hover:bg-[#FAF8ED]/15 transition-all shadow-lg flex flex-col"
             >
-              <img
-                src={member.image}
-                alt={member.name}
-                className="w-full h-60 object-cover"
-              />
-              <div className="p-6 text-center">
-                <h3 className="text-lg font-semibold mb-2">{member.name}</h3>
-                <p className="text-sm text-[#FAF8ED]/60">{member.role}</p>
+              <div className="flex-grow">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-4 text-center">
+                  <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
+                  <p className="text-sm text-[#FAF8ED]/60">{member.role}</p>
+                </div>
+              </div>
+              <div className="bg-[#FAF8ED]/5 p-3 flex justify-center space-x-4">
+                <a href="#" className="text-[#FAF8ED]/60 hover:text-[#FDB713] transition-colors">
+                  <Linkedin className="w-5 h-5" />
+                </a>
+                <a href="#" className="text-[#FAF8ED]/60 hover:text-[#FDB713] transition-colors">
+                  <Github className="w-5 h-5" />
+                </a>
               </div>
             </motion.div>
           ))}
@@ -109,19 +126,20 @@ const AboutUs = () => {
       <motion.section
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1, duration: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
         className="container mx-auto py-16 text-center"
       >
-        <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-          Join the Energy Revolution
+        <h2 className="text-2xl sm:text-3xl font-bold mb-4">
+          Contact Us
         </h2>
+        <p className="text-[#FAF8ED]/80 max-w-2xl mx-auto mb-8">
+          We're here to answer your questions and provide expert guidance on our innovative energy solutions. Let's discuss how we can power your future.
+        </p>
         <a
-          href="/Market"
-          className="inline-flex items-center bg-[#FDB713] text-[#2D3134] 
-            px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold 
-            hover:bg-[#FDB713]/90 transition-colors"
+          href="/contactus"
+          className="inline-flex items-center bg-[#FDB713] text-[#2D3134] px-8 sm:px-10 py-3 sm:py-4 rounded-full text-base sm:text-lg font-semibold hover:bg-[#FDB713]/90 transition-colors"
         >
-          Get Involved
+          Get in Touch
           <ChevronRight className="ml-2 w-5 h-5" />
         </a>
       </motion.section>
