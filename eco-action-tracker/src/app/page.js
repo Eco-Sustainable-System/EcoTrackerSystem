@@ -15,7 +15,7 @@ import {
   X,
   Star,
 } from "lucide-react";
-
+import { FaLeaf, FaSun, FaRecycle , FaLungs, FaCity} from 'react-icons/fa';
 export default function HomePage() {
   const products = [
     {
@@ -109,26 +109,25 @@ export default function HomePage() {
       impact: "10 MWh monthly",
     },
   ];
-  const conversionSteps = [
+  const renewableEnergyBenefits = [
     {
-      icon: <Activity className="w-12 h-12 text-[#fdb713]" />,
-      title: "Capture Motion",
-      description:
-        "Our advanced sensors detect and capture various forms of kinetic energy from your daily movements.",
+      icon: <FaLeaf className="text-[#FDB713] text-4xl" />, // أيقونة خضراء
+      title: 'Sustainable',
+      description: 'Renewable energy sources are inexhaustible and reduce reliance on fossil fuels.',
     },
     {
-      icon: <Zap className="w-12 h-12 text-[#fdb713]" />,
-      title: "Convert Energy",
-      description:
-        "Proprietary technology efficiently converts kinetic energy into clean, usable electrical power.",
+      icon: <FaSun className="text-[#FDB713] text-4xl" />, // أيقونة شمس
+      title: 'Environmentally Friendly',
+      description: 'They significantly lower greenhouse gas emissions and combat climate change.',
     },
     {
-      icon: <Battery className="w-12 h-12 text-[#fdb713]" />,
-      title: "Store & Utilize",
-      description:
-        "The generated electricity is stored in high-capacity batteries or directly powers your devices.",
+      icon: <FaRecycle className="text-[#FDB713] text-4xl" />, // أيقونة إعادة تدوير
+      title: 'Job Creation',
+      description: 'The renewable energy sector generates numerous job opportunities in various fields.',
     },
   ];
+  
+  
 
   return (
     <div className="bg-[#2D3134] min-h-screen mt-8">
@@ -164,30 +163,34 @@ export default function HomePage() {
       </header>
 
       {/* Impact Counter Section */}
-      <section className="py-8 bg-[#FAF8ED]">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div className="p-6 transform hover:scale-105 transition duration-300">
-              <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
-                1.5M kWh
-              </h3>
-              <p className="text-gray-600">Total Energy Generated</p>
-            </div>
-            <div className="p-6 transform hover:scale-105 transition duration-300">
-              <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
-                50,000+
-              </h3>
-              <p className="text-gray-600">Active Users</p>
-            </div>
-            <div className="p-6 transform hover:scale-105 transition duration-300">
-              <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
-                500 tons
-              </h3>
-              <p className="text-gray-600">CO2 Emissions Prevented</p>
-            </div>
-          </div>
-        </div>
-      </section>
+
+<section className="py-8 bg-[#FAF8ED]">
+  <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div className="p-6 transform hover:scale-105 transition duration-300">
+        <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
+          3,200 TWh
+        </h3>
+        <p className="text-gray-600">Total Energy Generated from Wind Power (2024)</p>
+      </div>
+      <div className="p-6 transform hover:scale-105 transition duration-300">
+        <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
+          4,200 TWh
+        </h3>
+        <p className="text-gray-600">Total Energy Generated from Hydropower (2024)</p>
+      </div>
+      <div className="p-6 transform hover:scale-105 transition duration-300">
+        <h3 className="text-4xl font-bold text-[#2D3134] mb-2 animate-count">
+          400+
+        </h3>
+        <p className="text-gray-600">Active Kinetic Energy Conversion Projects in Jordan (2024)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
       {/* Features Section */}
       <section id="features" className="py-16 bg-[#2D3134]">
@@ -252,26 +255,27 @@ export default function HomePage() {
 
       {/* Testimonials Section */}
       <section className="py-16 bg-[#FAF8ED]">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
-          <h2 className="text-3xl font-bold mb-12 text-center text-[#2D3134]">
-            From Motion to Power: Our Energy Conversion Process
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {conversionSteps.map((step, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
-              >
-                <div className="mb-4 flex justify-center">{step.icon}</div>
-                <h3 className="font-bold text-[#2D3134] text-xl mb-2 text-center">
-                  {step.title}
-                </h3>
-                <p className="text-gray-700 text-center">{step.description}</p>
-              </div>
-            ))}
-          </div>
+  <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
+    <h2 className="text-3xl font-bold mb-12 text-center text-[#2D3134]">
+      Benefits of Renewable Energy
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {renewableEnergyBenefits.map((benefit, index) => (
+        <div
+          key={index}
+          className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
+        >
+          <div className="mb-4 flex justify-center">{benefit.icon}</div>
+          <h3 className="font-bold text-[#2D3134] text-xl mb-2 text-center">
+            {benefit.title}
+          </h3>
+          <p className="text-gray-700 text-center">{benefit.description}</p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* CTA Section */}
       <section className="py-16 bg-[#2D3134]">
@@ -293,34 +297,43 @@ export default function HomePage() {
       </section>
 
       {/* Impact Section */}
-      <section id="impact" className="py-16 bg-[#FAF8ED]">
-        <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
-          <h2 className="text-3xl font-bold mb-12 text-center text-[#2D3134]">
-            Real-World Impact
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-[#2D3134] text-[#FAF8ED] rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300"
-              >
-                <p className="text-lg mb-4 text-center">
-                  "{testimonial.content}"
-                </p>
-                <div className="font-semibold text-lg text-center">
-                  {testimonial.name}
-                </div>
-                <div className="text-sm text-gray-400 mb-2 text-center">
-                  {testimonial.role}
-                </div>
-                <div className="text-sm text-[#fdb713] text-center">
-                  Impact: {testimonial.impact}
-                </div>
-              </div>
-            ))}
-          </div>
+      <section id="air-quality" className="py-16 bg-[#FAF8ED]">
+  <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-0">
+    <h2 className="text-3xl font-bold mb-12 text-center text-[#2D3134]">
+      Improving Air Quality
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="bg-[#2D3134] text-[#FAF8ED] rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300">
+        <div className="mb-4 flex justify-center">
+          <FaLeaf className="text-4xl" />
         </div>
-      </section>
+        <h3 className="font-bold text-xl mb-4 text-center">Reduction of CO2 Emissions</h3>
+        <p className="text-lg mb-4 text-center">
+          Transitioning to renewable energy sources has led to a significant reduction in carbon dioxide emissions, contributing to a healthier atmosphere.
+        </p>
+      </div>
+      <div className="bg-[#2D3134] text-[#FAF8ED] rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300">
+        <div className="mb-4 flex justify-center">
+          <FaLungs className="text-4xl" />
+        </div>
+        <h3 className="font-bold text-xl mb-4 text-center">Improved Respiratory Health</h3>
+        <p className="text-lg mb-4 text-center">
+          By reducing air pollutants, communities experience fewer respiratory illnesses, resulting in better public health outcomes.
+        </p>
+      </div>
+      <div className="bg-[#2D3134] text-[#FAF8ED] rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300">
+        <div className="mb-4 flex justify-center">
+          <FaCity className="text-4xl" />
+        </div>
+        <h3 className="font-bold text-xl mb-4 text-center">Enhanced Urban Environments</h3>
+        <p className="text-lg mb-4 text-center">
+          Cleaner air improves the quality of life in urban areas, making them more attractive and sustainable for residents.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
     </div>
   );
 }
