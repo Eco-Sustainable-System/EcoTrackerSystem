@@ -5,6 +5,7 @@ import {
   getJoiningChallengeById,
   updateJoiningChallenge,
   deleteJoiningChallenge,
+  getUsersByChallengeId,
 } from "@/lib/joiningChallengeController";
 import jwt from "jsonwebtoken";
 
@@ -65,9 +66,17 @@ export async function GET(req) {
   await dbConnect();
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const challengeId = searchParams.get("challengeId"); // Get challengeId if provided
 
   try {
-    if (id) {
+    if (challengeId) {
+      // Fetch users by challenge ID
+      const users = await getUsersByChallengeId(challengeId);
+      return new Response(JSON.stringify(users), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    } else if (id) {
       const challenge = await getJoiningChallengeById(id);
       return new Response(JSON.stringify(challenge), {
         status: 200,
@@ -87,6 +96,7 @@ export async function GET(req) {
     });
   }
 }
+
 
 export async function PUT(req) {
   await dbConnect();

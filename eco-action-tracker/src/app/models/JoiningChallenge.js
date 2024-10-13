@@ -14,7 +14,7 @@ const joiningChallengeSchema = new mongoose.Schema({
   },
   bikeId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Bikes",
+    ref: "Bike",
     required: true,
   },
   status: {

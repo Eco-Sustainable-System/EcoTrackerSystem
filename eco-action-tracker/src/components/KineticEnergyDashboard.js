@@ -8,36 +8,21 @@ import Sidebar from "./KineticEnergyDashboard-C/Sidebar";
 import VideoModal from "./KineticEnergyDashboard-C/VideoModal";
 import ToastNotifications from "./KineticEnergyDashboard-C/ToastNotifications";
 
-// Constants for width limits
-const MIN_SIDEBAR_WIDTH = 10; // Minimum width for the sidebar
-const MIN_CENTER_WIDTH = 20; // Minimum width for the center
-const MIN_USER_DASHBOARD_WIDTH = 15; // Minimum width for the User Dashboard
-const MAX_WIDTH = 90; // Maximum width for either section
+const MIN_SIDEBAR_WIDTH = 10;
+const MIN_CENTER_WIDTH = 20;
+const MIN_USER_DASHBOARD_WIDTH = 15;
+const MAX_WIDTH = 90;
 
 const KineticEnergyDashboard = () => {
   const [widths, setWidths] = useState({
-    sidebar: 25, // Sidebar width in percentage
-    center: 50, // Center width in percentage
+    sidebar: 25,
+    center: 50,
   });
   const [showVideo, setShowVideo] = useState(false);
   const [totalEnergy, setTotalEnergy] = useState(1234);
-  const [challenges, setChallenges] = useState([
-    {
-      id: 1,
-      name: "City Lights Challenge",
-      description: "Power city street lights for a week",
-      image: "/api/placeholder/400/300",
-      targetEnergy: 1000,
-      currentEnergy: 750,
-      progress: 75,
-      participants: 50,
-      startDate: "2024-10-15",
-      startTime: "09:00",
-      endDate: "2024-10-22",
-      endTime: "18:00",
-    },
-    // Add more challenges here
-  ]);
+  const [challenges, setChallenges] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [user, setUser] = useState({
     name: "John Doe",
     totalPoints: 1000,
@@ -49,12 +34,25 @@ const KineticEnergyDashboard = () => {
     ],
   });
 
-  // Track dragging state
   const isDragging = useRef(false);
   const initialPosition = useRef(0);
-  const dragSide = useRef(null); // Track which side is being dragged
+  const dragSide = useRef(null);
 
-  // Load saved widths from local storage on mount
+  useEffect(() => {
+    fetch("http://localhost:3000/api/challenges")
+      .then((response) => response.json())
+      .then((data) => {
+        setChallenges(data);
+        console.log(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching challenges:", error);
+        setError("Failed to load challenges.");
+        setLoading(false);
+      });
+  }, []);
+
   useEffect(() => {
     const savedWidths = JSON.parse(localStorage.getItem("dashboardWidths"));
     if (savedWidths) {
@@ -62,7 +60,6 @@ const KineticEnergyDashboard = () => {
     }
   }, []);
 
-  // Save widths to local storage whenever they change
   useEffect(() => {
     localStorage.setItem("dashboardWidths", JSON.stringify(widths));
   }, [widths]);
@@ -77,23 +74,21 @@ const KineticEnergyDashboard = () => {
   }, []);
 
   const handleMouseDown = useCallback((e, side) => {
-    isDragging.current = true; // Start dragging
-    initialPosition.current = e.clientX; // Get initial mouse position
-    dragSide.current = side; // Save which side is being dragged
-    e.preventDefault(); // Prevent text selection
+    isDragging.current = true;
+    initialPosition.current = e.clientX;
+    dragSide.current = side;
+    e.preventDefault();
 
-    // Add mousemove and mouseup event listeners
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseup", handleMouseUp);
   }, []);
 
   const handleMouseMove = useCallback((e) => {
-    if (!isDragging.current) return; // Do nothing if not dragging
+    if (!isDragging.current) return;
 
-    const deltaX = e.clientX - initialPosition.current; // Calculate the distance moved
-    const deltaPercentage = (deltaX / window.innerWidth) * 100; // Convert to percentage
+    const deltaX = e.clientX - initialPosition.current;
+    const deltaPercentage = (deltaX / window.innerWidth) * 100;
 
-    // Update widths based on which side is being dragged
     setWidths((prevWidths) => {
       const newWidths = { ...prevWidths };
 
@@ -109,7 +104,6 @@ const KineticEnergyDashboard = () => {
         );
       }
 
-      // Ensure that total width does not exceed 100%
       const totalWidth = newWidths.sidebar + newWidths.center;
       if (totalWidth > 100) {
         newWidths.sidebar = Math.max(
@@ -125,12 +119,12 @@ const KineticEnergyDashboard = () => {
       return newWidths;
     });
 
-    initialPosition.current = e.clientX; // Update initial position
+    initialPosition.current = e.clientX;
   }, []);
 
   const handleMouseUp = useCallback(() => {
-    isDragging.current = false; // Stop dragging
-    document.removeEventListener("mousemove", handleMouseMove); // Clean up event listeners
+    isDragging.current = false;
+    document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
   }, [handleMouseMove]);
 
@@ -154,7 +148,6 @@ const KineticEnergyDashboard = () => {
     }));
   };
 
-  // Keyboard control for the dividers
   const handleKeyDown = (e) => {
     if (e.key === "ArrowLeft") {
       setWidths((prevWidths) => ({
@@ -182,8 +175,8 @@ const KineticEnergyDashboard = () => {
   return (
     <div
       className="flex h-screen text-white bg-black"
-      tabIndex={0} // Make the div focusable
-      onKeyDown={handleKeyDown} // Handle keyboard events
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
     >
       <Sidebar
         totalEnergy={totalEnergy}
@@ -194,14 +187,14 @@ const KineticEnergyDashboard = () => {
       {/* Left Divider */}
       <div
         className="w-3 bg-black cursor-col-resize hover:bg-orange-400 transition-colors duration-200 flex items-center justify-center"
-        onMouseDown={(e) => handleMouseDown(e, "left")} // Left divider
+        onMouseDown={(e) => handleMouseDown(e, "left")}
       >
         <div className="h-8 w-1 bg-gray-500 rounded-md" />
       </div>
 
       {/* Center Content */}
       <motion.div
-        style={{ width: `${widths.center}%`, transition: "width 0.2s ease" }} // Smooth transition for width change
+        style={{ width: `${widths.center}%`, transition: "width 0.2s ease" }}
         className="p-6 overflow-y-auto bg-black text-white"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -215,6 +208,7 @@ const KineticEnergyDashboard = () => {
             key={challenge.id}
             challenge={challenge}
             onJoin={handleJoinChallenge}
+            challengeId={challenge._id}
           />
         ))}
       </motion.div>
@@ -222,7 +216,7 @@ const KineticEnergyDashboard = () => {
       {/* Right Divider */}
       <div
         className="w-3 bg-black cursor-col-resize hover:bg-orange-400 transition-colors duration-200 flex items-center justify-center"
-        onMouseDown={(e) => handleMouseDown(e, "right")} // Right divider
+        onMouseDown={(e) => handleMouseDown(e, "right")}
       >
         <div className="h-8 w-1 bg-gray-500 rounded-md" />
       </div>
@@ -231,13 +225,13 @@ const KineticEnergyDashboard = () => {
       <motion.div
         style={{
           width: `${100 - widths.sidebar - widths.center}%`,
-          minWidth: "500px", // Set a minimum width for responsiveness
-          maxWidth: "900px", // Set a max width for smaller UserDashboard
-          maxHeight: "calc(150vh - 2px)", // Adjust height for smaller screens
-          overflowY: "auto", // Enable vertical scrolling
+          minWidth: "500px",
+          maxWidth: "900px",
+          maxHeight: "calc(150vh - 2px)",
+          overflowY: "auto",
           transition: "width 0.2s ease",
         }}
-        className="p-5 bg-black " // Smaller padding for responsiveness
+        className="p-5 bg-black "
         initial={{ x: 300 }}
         animate={{ x: 0 }}
         transition={{ duration: 0.5 }}

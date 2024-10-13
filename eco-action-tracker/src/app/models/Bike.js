@@ -8,7 +8,7 @@ const bikeSchema = new mongoose.Schema({
   currentUsers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
+      ref: "User",
     },
   ],
   isAvailable: {

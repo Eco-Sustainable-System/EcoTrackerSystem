@@ -41,7 +41,7 @@ export async function POST(req) {
     const response = NextResponse.json(newUser, { status: 201 });
 
     response.cookies.set("authToken", token, {
-      httpOnly: true,
+      httpOnly: false,
       sameSite: "strict",
       maxAge: 2 * 60 * 60, // 2 hours in seconds
     });
