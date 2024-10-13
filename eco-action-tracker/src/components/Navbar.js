@@ -164,65 +164,30 @@ export default function Navbar() {
               </Link>
             </li>
             <li>
-              <div className="relative group">
-                <button className="flex items-center py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0">
-                  Services
-                  <svg
-                    className="w-2.5 h-2.5 ml-2.5"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 10 6"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m1 1 4 4 4-4"
-                    />
-                  </svg>
-                </button>
-                <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-[#2D3134] ring-1 ring-black ring-opacity-5 invisible group-hover:visible">
-                  <div
-                    className="py-1"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="options-menu"
-                  >
-                    <Link
-                      href="/service1"
-                      className="block px-4 py-2 text-sm text-[#FAF8ED] hover:bg-[#fdb713]"
-                      role="menuitem"
-                    >
-                      Service 1
-                    </Link>
-                    <Link
-                      href="/service2"
-                      className="block px-4 py-2 text-sm text-[#FAF8ED] hover:bg-[#fdb713]"
-                      role="menuitem"
-                    >
-                      Service 2
-                    </Link>
-                    <Link
-                      href="/service3"
-                      className="block px-4 py-2 text-sm text-[#FAF8ED] hover:bg-[#fdb713]"
-                      role="menuitem"
-                    >
-                      Service 3
-                    </Link>
-                  </div>
-                </div>
-              </div>
+              <Link
+                href="/"
+                className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
+              >
+                Store
+              </Link>
             </li>
-            <li>
+          {user ?   <li>
               <Link
                 href="/challenges"
                 className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
               >
                 Challenges
               </Link>
-            </li>
+            </li> : null}
+          {user ?   <li>
+              <Link
+                href="/Community"
+                className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
+              >
+                Community
+              </Link>
+            </li> : null}
+          
             <li>
               <Link
                 href="/about"

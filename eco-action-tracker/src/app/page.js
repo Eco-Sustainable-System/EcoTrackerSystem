@@ -151,8 +151,8 @@ export default function HomePage() {
                 <Link href={user ? "/store" : "/register" } className="bg-[#fdb713] text-[#ffffff] px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300 transform hover:scale-105 animate-slide-up delay-400">
                   {user ? "Go to Store" : "Get Started" }
                 </Link>
-                <Link href={user ? "/challenges" : "/community-feed" } className="border-2 border-[#fdb713] text-[#fdb713] px-8 py-3 rounded-full font-semibold hover:bg-[#fdb713] hover:text-[#2D3134] transition duration-300 transform hover:scale-105 animate-slide-up delay-500">
-                {user ? "Go to Challenges" : "Go to Community" }
+                <Link href={user ? "/challenges" : "/store" } className="border-2 border-[#fdb713] text-[#fdb713] px-8 py-3 rounded-full font-semibold hover:bg-[#fdb713] hover:text-[#ffffff] transition duration-300 transform hover:scale-105 animate-slide-up delay-500">
+                {user ? "Go to Challenges" : "Go to Store" }
                 </Link>
               </div>
             </div>
