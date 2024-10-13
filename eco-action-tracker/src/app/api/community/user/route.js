@@ -9,7 +9,7 @@ export async function GET(req) {
     try {
         const user = await User.findById("670b8c582e36e5bc5231ac4e");
 
-        console.log(user);
+        // console.log(user);
 
         return NextResponse.json({ user }, { status: 200 });
     } catch (error) {

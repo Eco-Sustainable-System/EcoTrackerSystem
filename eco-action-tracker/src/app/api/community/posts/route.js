@@ -19,7 +19,7 @@ export async function GET(req) {
             .populate({
                 path: 'comments.replies.author', // Populate author in replies
                 select: 'firstName lastName picture' // Select the fields you need
-            });
+            }).sort({ _id: -1 });
 
         return NextResponse.json({ posts }, { status: 200 });
     } catch (error) {
