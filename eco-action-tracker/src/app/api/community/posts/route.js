@@ -21,6 +21,8 @@ export async function GET(req) {
                 select: 'firstName lastName picture' // Select the fields you need
             }).sort({ _id: -1 });
 
+        console.log(posts);
+
         return NextResponse.json({ posts }, { status: 200 });
     } catch (error) {
         console.error('Error fetching posts:', error);

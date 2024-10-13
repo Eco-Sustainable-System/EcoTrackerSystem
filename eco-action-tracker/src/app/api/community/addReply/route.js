@@ -21,7 +21,7 @@ export async function POST(req) {
             {
                 $push: {
                     'comments.$.replies': {
-                        author: "670b8c582e36e5bc5231ac4e",  // Use 'user' for the author field
+                        author: "670c129350b9550eb8c64e56",  // Use 'user' for the author field
                         content: newReplies,
                     },
                 },

@@ -16,7 +16,7 @@ export async function POST(req) {
     try {
 
         const newPost = new Post({
-            user: "670b8c582e36e5bc5231ac4e",
+            user: "670c129350b9550eb8c64e56",
             content: newPostContent,
             image: newPostImage,
         });

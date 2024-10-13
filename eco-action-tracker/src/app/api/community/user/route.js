@@ -7,7 +7,7 @@ export async function GET(req) {
     await connect();
 
     try {
-        const user = await User.findById("670b8c582e36e5bc5231ac4e");
+        const user = await User.findById("670c129350b9550eb8c64e56");
 
         // console.log(user);
 

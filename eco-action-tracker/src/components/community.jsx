@@ -286,63 +286,38 @@ const EcoGymEnergyPage = ({ user, posts }) => {
     }, []);
 
     return (
-        <div className={`min-h-screen mt-20 flex flex-col ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-green-50 to-blue-50'}`}>
-            {/* Header */}
-            {/* <header className="bg-green-600 text-white shadow-lg">
-                <div className="container mx-auto py-4 px-6">
-                    <div className="flex justify-between items-center">
-                        <div className="flex items-center space-x-4">
-                            <Zap size={32} className="text-yellow-300" />
-                            <h1 className="text-2xl font-bold">EcoGym Energy</h1>
-                        </div>
-                        <nav>
-                            <ul className="flex space-x-6">
-                                <li><a href="#" className="hover:text-green-200 transition-colors duration-300">Home</a></li>
-                                <li><a href="#" className="hover:text-green-200 transition-colors duration-300">Community</a></li>
-                                <li><a href="#" className="hover:text-green-200 transition-colors duration-300">Leaderboard</a></li>
-                                <li><a href="#" className="hover:text-green-200 transition-colors duration-300">About</a></li>
-                            </ul>
-                        </nav>
-                        <div className="flex items-center space-x-4">
-                            <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-green-700 transition-colors duration-300">
-                                {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
-                            </button>
-                            <img src="https://i.pravatar.cc/150?img=12" alt="User" className="w-10 h-10 rounded-full border-2 border-white" />
-                        </div>
-                    </div>
-                </div>
-            </header> */}
+        <div className={`commuinty min-h-screen mt-20 flex flex-col`}>
 
             <div className="container mx-auto p-4 flex flex-col md:flex-row gap-4">
 
                 {/* Left Sidebar */}
                 <div className="w-full md:w-1/4 space-y-4">
                     {/* Profile Card */}
-                    <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                        <div className="h-20 bg-gradient-to-r from-green-400 to-blue-500 relative">
+                    <div className=" rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 animate-fade-in">
+                        <div className="h-20 bg-gradient-to-r from-[#fdb713] to-blue-500 relative">
                             <img src={user.profileImage} alt="Profile background" className="w-full h-full object-cover" />
                         </div>
                         <div className="p-4 relative">
-                            <img src={user.picture} alt={`${user.firstName} ${user.lastName}`} className="w-20 h-20 rounded-full absolute -top-10 left-1/2 transform -translate-x-1/2 border-4 border-white shadow-lg" />
-                            <h2 className="text-xl font-bold mt-12 text-center">{`${user.firstName} ${user.lastName}`}</h2>
+                            <img src={user.picture} alt={`${user.firstName} ${user.lastName}`} className="w-20 h-20 rounded-full absolute -top-10 left-1/2 transform -translate-x-1/2 border-4 border-[#FAF8ED] shadow-lg" />
+                            <h2 className="text-xl font-bold mt-12 text-center text-[#2D3134]">{`${user.firstName} ${user.lastName}`}</h2>
                             <p className="text-sm text-gray-600 text-center">Fitness Enthusiast & Green Energy Champion</p>
                             <p className="text-sm text-gray-500 text-center">New York, USA</p>
                             <div className="mt-4 flex justify-center items-center space-x-2">
-                                <Battery className="text-green-500" />
-                                <span className="text-lg font-semibold text-green-600">{user.totalEnergyGenerated} kWh</span>
+                                <Battery className="text-[#fdb713]" />
+                                <span className="text-lg font-semibold text-[#fdb713]">{user.totalEnergyGenerated} kWh</span>
                             </div>
                             <p className="text-xs text-center mt-1 text-gray-500">Power Saved This Session</p>
                         </div>
                     </div>
 
                     {/* Achievement Badges */}
-                    <div className="bg-white rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300">
-                        <h3 className="font-bold text-lg mb-2 text-green-600">Achievement Badges</h3>
+                    <div className=" rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300 animate-fade-in delay-200">
+                        <h3 className="font-bold text-lg mb-2 text-[#2D3134]">Achievement Badges</h3>
                         <div className="grid grid-cols-3 gap-4">
                             {user.badges.map((badge) => (
                                 <div key={badge} className="flex flex-col items-center">
-                                    <Award className="text-yellow-500" size={32} />
-                                    <span className="text-xs mt-1">{badge}</span>
+                                    <Award className="text-[#fdb713]" size={32} />
+                                    <span className="text-xs mt-1 text-[#2D3134]">{badge}</span>
                                 </div>
                             ))}
                         </div>
@@ -354,14 +329,14 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                 {/* Main Feed */}
                 <div className="w-full md:w-1/2 space-y-6">
                     {/* Create Post Section */}
-                    <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg p-4`}>
+                    <div className={` rounded-lg shadow-lg p-4`}>
                         <div className="flex items-center space-x-2 mb-4">
                             <img src={user.picture} alt="User" className="w-12 h-12 rounded-full" />
                             <textarea
                                 value={newPostContent}
                                 onChange={(e) => setNewPostContent(e.target.value)}
                                 placeholder="Share your eco-fitness journey..."
-                                className={`w-full p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-400`}
+                                className={`w-full p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} focus:outline-none focus:ring-2 focus:ring-[#fdb713]`}
                                 rows="3"
                             />
                         </div>
@@ -372,21 +347,21 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                     value={newPostImage}
                                     onChange={(e) => setNewPostImage(e.target.value)}
                                     placeholder="Enter image URL..."
-                                    className={`w-full p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} focus:outline-none focus:ring-2 focus:ring-green-400`}
+                                    className={`w-full p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-100 border-gray-300'} focus:outline-none focus:ring-2 focus:ring-[#fdb713]`}
                                 />
                             </div>
                         )}
                         <div className="flex justify-between items-center">
                             <button
                                 onClick={() => setShowImageInput(!showImageInput)}
-                                className="flex items-center space-x-2 text-gray-500 hover:text-green-500 transition-colors duration-300"
+                                className="flex items-center space-x-2 text-gray-500 hover:text-[#fdb713] transition-colors duration-300"
                             >
                                 <ImageIcon size={20} />
                                 <span>{showImageInput ? 'Remove Image' : 'Add Image'}</span>
                             </button>
                             <button
                                 onClick={handleCreatePost}
-                                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-300"
+                                className="px-4 py-2 bg-[#fdb713] text-white rounded-lg hover:bg-[#fd9b13] transition-colors duration-300"
                             >
                                 Post
                             </button>
@@ -395,7 +370,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
 
                     {/* Posts */}
                     {posts.map(post => (
-                        <div key={post._id} className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow-lg overflow-hidden`}>
+                        <div key={post._id} className={` rounded-lg shadow-lg overflow-hidden`}>
                             <div className="p-4">
                                 <div className="flex justify-between items-center mb-4">
                                     <div className="flex items-center space-x-2">
@@ -418,16 +393,16 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                 <div className="flex justify-between border-t pt-4">
                                     <button
                                         onClick={() => handleLikePost(post._id)}
-                                        className="flex items-center space-x-1 text-gray-500 hover:text-green-500 transition-colors duration-300"
+                                        className="flex items-center space-x-1 text-gray-500 hover:text-[#fdb713] transition-colors duration-300"
                                     >
                                         <ThumbsUp size={20} />
                                         <span>Like</span>
                                     </button>
-                                    <button className="flex items-center space-x-1 text-gray-500 hover:text-green-500 transition-colors duration-300">
+                                    <button className="flex items-center space-x-1 text-gray-500 hover:text-[#fdb713] transition-colors duration-300">
                                         <MessageSquare size={20} />
                                         <span>Comment</span>
                                     </button>
-                                    <button className="flex items-center space-x-1 text-gray-500 hover:text-green-500 transition-colors duration-300">
+                                    <button className="flex items-center space-x-1 text-gray-500 hover:text-[#fdb713] transition-colors duration-300">
                                         <Share2 size={20} />
                                         <span>Share</span>
                                     </button>
@@ -446,7 +421,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                                 <div className="flex items-center space-x-2 mt-2 text-xs text-gray-500">
                                                     <button
                                                         onClick={() => handleLikeComment(post._id, comment._id)}
-                                                        className="hover:text-green-500 transition-colors duration-300"
+                                                        className="hover:text-[#fdb713] transition-colors duration-300"
                                                     >
                                                         Like
                                                     </button>
@@ -458,7 +433,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                                                 replyInput.focus();
                                                             }
                                                         }}
-                                                        className="hover:text-green-500 transition-colors duration-300"
+                                                        className="hover:text-[#fdb713] transition-colors duration-300"
                                                     >
                                                         Reply
                                                     </button>
@@ -474,7 +449,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                                             <div className="flex items-center space-x-2 mt-1 text-xs text-gray-500">
                                                                 <button
                                                                     onClick={() => handleLikeReply(post._id, comment._id, reply._id)}
-                                                                    className="hover:text-green-500 transition-colors duration-300"
+                                                                    className="hover:text-[#fdb713] transition-colors duration-300"
                                                                 >
                                                                     Like
                                                                 </button>
@@ -492,11 +467,11 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                                         // value={newReplies[`${post._id}-${comment._id}`] || ''}
                                                         onChange={(e) => setNewReplies(e.target.value)}
                                                         placeholder="Write a reply..."
-                                                        className={`flex-grow p-2 rounded-lg text-sm ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-green-400`}
+                                                        className={`flex-grow p-2 rounded-lg text-sm ${isDarkMode ? 'bg-gray-700' : 'bg-gray-100'} focus:outline-none focus:ring-2 focus:ring-[#fdb713]`}
                                                     />
                                                     <button
                                                         onClick={() => handleAddReply(post._id, comment._id)}
-                                                        className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-300"
+                                                        className="p-2 bg-[#fdb713] text-white rounded-full hover:bg-[#fd9b13] transition-colors duration-300"
                                                     >
                                                         <Send size={14} />
                                                     </button>
@@ -512,11 +487,11 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                                         // value={newComments[post._id] || ''}
                                         onChange={(e) => setNewComments(e.target.value)}
                                         placeholder="Write a comment..."
-                                        className={`flex-grow p-2 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'} focus:outline-none focus:ring-2 focus:ring-green-400`}
+                                        className={`flex-grow p-2 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'} focus:outline-none focus:ring-2 focus:ring-[#fdb713]`}
                                     />
                                     <button
                                         onClick={() => handleAddComment(post._id)}
-                                        className="p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors duration-300"
+                                        className="p-2 bg-[#fdb713] text-white rounded-full hover:bg-[#fd9b13] transition-colors duration-300"
                                     >
                                         <Send size={16} />
                                     </button>
@@ -532,40 +507,52 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                 {/* Right Sidebar */}
                 <div className="w-full md:w-1/4 space-y-6">
                     {/* User Information */}
-                    <div className="bg-white rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300">
-                        <h3 className="font-bold text-lg mb-4 text-green-600">User Information</h3>
+                    <div className=" rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300 animate-fade-in delay-300">
+                        <h3 className="font-bold text-lg mb-4 text-[#2D3134]">User Information</h3>
                         <ul className="space-y-3">
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">Followers</span>
-                                <span className="font-semibold text-green-500">{user.followers.length}</span>
+                                <span className="text-sm text-[#2D3134]">Followers</span>
+                                <span className="font-semibold text-[#fdb713]">{user.followers.length}</span>
                             </li>
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">Posts</span>
-                                <span className="font-semibold text-green-500">{user.posts.length}</span>
+                                <span className="text-sm text-[#2D3134]">Posts</span>
+                                <span className="font-semibold text-[#fdb713]">{user.posts.length}</span>
                             </li>
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">Goals Completed</span>
-                                <span className="font-semibold text-green-500">{user.completedChallenges.length}</span>
+                                <span className="text-sm text-[#2D3134]">Goals Completed</span>
+                                <span className="font-semibold text-[#fdb713]">{user.completedChallenges.length}</span>
                             </li>
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">Badges Earned</span>
-                                <span className="font-semibold text-green-500">{user.badges.length}</span>
+                                <span className="text-sm text-[#2D3134]">Badges Earned</span>
+                                <span className="font-semibold text-[#fdb713]">{user.badges.length}</span>
                             </li>
                         </ul>
                     </div>
 
                     {/* Goals Achieved */}
-                    <div className="bg-white rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300">
-                        <h3 className="font-bold text-lg mb-2 text-green-600">Goals Achieved</h3>
+                    <div className=" rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300 animate-fade-in delay-400">
+                        <h3 className="font-bold text-lg mb-2 text-[#2D3134]">Goals Achieved</h3>
                         <ul className="space-y-2">
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">Power Saved</span>
-                                <span className="font-semibold text-green-500">{user.totalEnergyGenerated} kWh</span>
+                                <span className="text-sm text-[#2D3134]">Power Saved</span>
+                                <span className="font-semibold text-[#fdb713]">{user.totalEnergyGenerated} kWh</span>
                             </li>
                             <li className="flex justify-between items-center">
-                                <span className="text-sm">CO2 Reduced</span>
-                                <span className="font-semibold text-green-500">{user.totalCO2Reduction} kg</span>
+                                <span className="text-sm text-[#2D3134]">CO2 Reduced</span>
+                                <span className="font-semibold text-[#fdb713]">{user.totalCO2Reduction} kg</span>
                             </li>
+                        </ul>
+                    </div>
+
+                    {/* Trending Topics */}
+                    <div className="rounded-lg shadow-lg p-4 transform hover:scale-105 transition-transform duration-300 animate-fade-in delay-500">
+                        <h3 className="font-bold text-lg mb-2 text-[#2D3134]">Trending Topics</h3>
+                        <ul className="space-y-2">
+                            {['#EcoFitness', '#GreenEnergy', '#SustainableLiving', '#KineticPower', '#CleanTech'].map((topic, index) => (
+                                <li key={index} className="text-sm text-[#2D3134] hover:text-[#fdb713] cursor-pointer transition-colors duration-300">
+                                    {topic}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -576,7 +563,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
             {/* Scroll to Top Button */}
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="fixed bottom-4 right-4 bg-green-500 text-white p-2 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300"
+                className="fixed bottom-4 right-4 bg-[#fdb713] text-white p-2 rounded-full shadow-lg hover:bg-[#fd9b13] transition-colors duration-300"
             >
                 <ChevronUp size={24} />
             </button>
