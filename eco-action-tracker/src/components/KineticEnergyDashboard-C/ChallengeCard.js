@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronDown,
@@ -10,27 +10,76 @@ import {
   Trophy,
   Zap,
 } from "lucide-react";
+import Cookies from "js-cookie";
 import "../../app/Sidebar.css";
 
-const ChallengeCardspage = ({ challenge, onJoin }) => {
+const ChallengeCardspage = ({ challenge, onJoin, challengeId }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [reminder, setReminder] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [participants, setParticipants] = useState(0);
+
+  const addReminder = async () => {
+    const authToken = Cookies.get("authToken");
+
+    try {
+      const response = await fetch("http://localhost:3000/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({ reminder }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add reminder");
+      }
+
+      setReminder("");
+      setInterval(() => showToast(reminder), 600000);
+      console.log("Reminder added successfully!");
+    } catch (error) {
+      console.error("Error adding reminder:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/joiningChallenges?challengeId=${challengeId}`
+        );
+        const data = await response.json();
+        setParticipants(data.userCount);
+      } catch (error) {
+        console.error("Error fetching participants:", error);
+      }
+    };
+
+    fetchParticipants();
+  }, [challengeId]);
 
   const handleJoin = () => {
     onJoin(challenge.id);
   };
 
-  const addReminder = () => {
-    if (reminder) {
-      alert(`Reminder set: ${reminder}`);
-      setReminder("");
-      setInterval(() => showToast(reminder), 600000);
-    }
-  };
-
   const showToast = (message) => {
     alert(`Reminder: ${message}`);
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Intl.DateTimeFormat("en-US", options).format(
+      new Date(dateString)
+    );
+  };
+
+  const formatTime = (timeString) => {
+    const options = { hour: "numeric", minute: "2-digit" };
+    return new Intl.DateTimeFormat("en-US", options).format(
+      new Date(`1970-01-01T${timeString}`)
+    );
   };
 
   return (
@@ -54,7 +103,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
         </div>
         <div className="mb-6 relative">
           <img
-            src="https://i.pinimg.com/564x/b5/ab/f6/b5abf6d0044b8d63ff8c42cf8142584e.jpg"
+            src={challenge.thumbnail}
             alt={challenge.name}
             className="w-full h-48 object-cover rounded-lg shadow-md"
           />
@@ -106,7 +155,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   Participants
                 </span>
                 <span className="font-bold text-orange-400">
-                  {challenge.participants}
+                  {participants}
                 </span>
               </div>
               <div className="flex items-center justify-between text-gray-300">
@@ -114,7 +163,8 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   <Calendar size={20} className="mr-2 text-orange-400" /> Start
                 </span>
                 <span className="font-bold">
-                  {challenge.startDate} at {challenge.startTime}
+                  {formatDate(challenge.startDate)} at{" "}
+                  {formatTime(challenge.startHour)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-gray-300">
@@ -122,7 +172,8 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   <Clock size={20} className="mr-2 text-orange-400" /> End
                 </span>
                 <span className="font-bold">
-                  {challenge.endDate} at {challenge.endTime}
+                  {formatDate(challenge.endDate)} at{" "}
+                  {formatTime(challenge.endHour)}
                 </span>
               </div>
               <motion.button
@@ -150,7 +201,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
               {challenge.name}
             </h2>
             <img
-              src={challenge.image}
+              src={challenge.thumbnail}
               alt={challenge.name}
               className="w-full h-48 object-cover rounded-lg shadow-md mb-6"
             />
@@ -164,7 +215,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   Participants
                 </span>
                 <span className="font-bold text-orange-400">
-                  {challenge.participants}
+                  {participants}
                 </span>
               </div>
               <div className="flex items-center justify-between text-gray-300">
@@ -172,7 +223,8 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   <Calendar size={20} className="mr-2 text-orange-400" /> Start
                 </span>
                 <span className="font-bold">
-                  {challenge.startDate} at {challenge.startTime}
+                  {formatDate(challenge.startDate)} at{" "}
+                  {formatTime(challenge.startHour)}{" "}
                 </span>
               </div>
               <div className="flex items-center justify-between text-gray-300">
@@ -180,7 +232,8 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                   <Clock size={20} className="mr-2 text-orange-400" /> End
                 </span>
                 <span className="font-bold">
-                  {challenge.endDate} at {challenge.endTime}
+                  {formatDate(challenge.endDate)} at{" "}
+                  {formatTime(challenge.endHour)}{" "}
                 </span>
               </div>
             </div>
@@ -190,7 +243,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                 value={reminder}
                 onChange={(e) => setReminder(e.target.value)}
                 placeholder="Set a reminder"
-                className="border border-gray-600 rounded-l-lg p-3 flex-grow focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="border text-black border-gray-600 rounded-l-lg p-3 flex-grow focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
               <motion.button
                 onClick={addReminder}
@@ -198,7 +251,7 @@ const ChallengeCardspage = ({ challenge, onJoin }) => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Bell size={20} />
+                <Bell size={25} />
               </motion.button>
             </div>
             <motion.button
