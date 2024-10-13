@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Wind, Sun, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import axios from "axios";
 import GoogleButton from "@/components/GoogleButton";
+import Swal from 'sweetalert2';
 function SignUp() {
   const router = useRouter();
   const [FirstName, setFirstName] = useState("");

@@ -2,8 +2,7 @@
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SessionLayout from "@/components/SessionLayout"; // استيراد SessionLayout
-
+import SessionLayout from "@/components/SessionLayout";
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
