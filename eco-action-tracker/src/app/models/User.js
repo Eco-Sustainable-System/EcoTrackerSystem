@@ -66,6 +66,7 @@ const userSschema = new mongoose.Schema(
     savedEnergy: Number,
     followers: [{ type: ObjectId, ref: "User" },],
     posts: [{ type: ObjectId, ref: "Post" },],
+    active: { type: Boolean, default: true },
   },
   { timestamps: true }
 );
