@@ -54,7 +54,7 @@ const userSschema = new mongoose.Schema(
       // Custom reminders set by the user for motivation
       { type: String },
     ],
-    googleId: { type: String, unique: true },
+    googleId: { type: String },
     bikes: [
       // Custom reminders set by the user for motivation
       { type: String },
