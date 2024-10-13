@@ -228,7 +228,7 @@ export default function Navbar() {
                 href="/about"
                 className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
               >
-                About
+                Overview
               </Link>
             </li>
             <li>
@@ -236,7 +236,7 @@ export default function Navbar() {
                 href="/contactus"
                 className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
               >
-                Contact
+                Get in Touch
               </Link>
             </li>
           </ul>

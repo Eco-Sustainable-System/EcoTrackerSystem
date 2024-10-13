@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Battery,
@@ -16,7 +17,29 @@ import {
   Star,
 } from "lucide-react";
 import { FaLeaf, FaSun, FaRecycle , FaLungs, FaCity} from 'react-icons/fa';
+import axios from "axios";
 export default function HomePage() {
+  const [user, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null);
+
+  // جلب البيانات باستخدام useEffect
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/users", {
+          withCredentials: true,
+        });
+        setUserData(response.data);
+        setLoading(false)
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setLoading(false)
+      }
+    };
+
+    fetchUserData();
+  }, []);
   const products = [
     {
       title: "EcoStep Power Generator",
@@ -85,30 +108,6 @@ export default function HomePage() {
         "Transforming your energy into a force for global sustainability",
     },
   ];
-
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "Home User",
-      content:
-        "Thanks to EcoAction, my daily routine now powers my home. It's incredible!",
-      impact: "2.5 kWh daily",
-    },
-    {
-      name: "Tech Innovators Inc.",
-      role: "Corporate Client",
-      content:
-        "Implementing EcoAction solutions reduced our energy costs by 40%.",
-      impact: "500 kWh weekly",
-    },
-    {
-      name: "Green City Council",
-      role: "Municipal Partner",
-      content:
-        "Our city's parks now generate enough power for all street lighting.",
-      impact: "10 MWh monthly",
-    },
-  ];
   const renewableEnergyBenefits = [
     {
       icon: <FaLeaf className="text-[#FDB713] text-4xl" />, // أيقونة خضراء
@@ -127,7 +126,11 @@ export default function HomePage() {
     },
   ];
   
-  
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen bg-gradient-to-br from-[#2D3134] to-[#1A1D1F]">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-[#FDB713]"></div>
+    </div>;
+  }
 
   return (
     <div className="bg-[#2D3134] min-h-screen mt-8">
@@ -145,12 +148,12 @@ export default function HomePage() {
                 Join the kinetic revolution and be part of the solution.
               </p>
               <div className="flex flex-col sm:flex-row justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-                <button className="bg-[#fdb713] text-[#2D3134] px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300 transform hover:scale-105 animate-slide-up delay-400">
-                  Get Started
-                </button>
-                <button className="border-2 border-[#fdb713] text-[#fdb713] px-8 py-3 rounded-full font-semibold hover:bg-[#fdb713] hover:text-[#2D3134] transition duration-300 transform hover:scale-105 animate-slide-up delay-500">
-                  Watch Demo
-                </button>
+                <Link href={user ? "/store" : "/register" } className="bg-[#fdb713] text-[#ffffff] px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300 transform hover:scale-105 animate-slide-up delay-400">
+                  {user ? "Go to Store" : "Get Started" }
+                </Link>
+                <Link href={user ? "/challenges" : "/community-feed" } className="border-2 border-[#fdb713] text-[#fdb713] px-8 py-3 rounded-full font-semibold hover:bg-[#fdb713] hover:text-[#2D3134] transition duration-300 transform hover:scale-105 animate-slide-up delay-500">
+                {user ? "Go to Challenges" : "Go to Community" }
+                </Link>
               </div>
             </div>
             <div className="flex justify-center">
@@ -288,7 +291,7 @@ export default function HomePage() {
             lives through movement.
           </p>
           <Link
-            href="/register"
+          href={user ? "/challenges" : "/register" }
             className="bg-[#fdb713] text-[#2D3134] px-8 py-3 rounded-full font-semibold hover:bg-opacity-90 transition duration-300 transform hover:scale-105"
           >
             Start Your Journey
