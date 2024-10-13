@@ -1,4 +1,4 @@
-    // app/api/users/login/route.js
+// app/api/users/login/route.js
 import dbConnect from "@/lib/mongodb";
 import User from "@/app/models/User";
 import { NextResponse } from "next/server";
@@ -16,19 +16,13 @@ export async function POST(req) {
   // التحقق إذا كان المستخدم موجود في قاعدة البيانات
   const user = await User.findOne({ email });
   if (!user) {
-    return NextResponse.json(
-      { message: "User not found" },
-      { status: 404 }
-    );
+    return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
 
   // التحقق من صحة كلمة المرور
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return NextResponse.json(
-      { message: "Invalid password" },
-      { status: 401 }
-    );
+    return NextResponse.json({ message: "Invalid password" }, { status: 401 });
   }
 
   // إنشاء رمز JWT
@@ -40,10 +34,13 @@ export async function POST(req) {
   const token = jwt.sign(payloadJwt, secretKey, { expiresIn: "2h" });
 
   // إعداد الرد مع رمز التوثيق في الكوكيز
-  const response = NextResponse.json({ message: "Login successful" }, { status: 200 });
+  const response = NextResponse.json(
+    { message: "Login successful" },
+    { status: 200 }
+  );
 
   response.cookies.set("authToken", token, {
-    httpOnly: true,
+    httpOnly: false,
     sameSite: "strict",
     maxAge: 2 * 60 * 60, // 2 ساعات
   });
