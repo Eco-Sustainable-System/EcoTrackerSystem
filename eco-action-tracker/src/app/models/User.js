@@ -6,6 +6,7 @@ const userSschema = new mongoose.Schema(
     lastName: { type: String },
     email: { type: String, unique: true },
     password: { type: String },
+    picture: { type: String },
     profileImage: {
       type: String,
     },
@@ -62,6 +63,9 @@ const userSschema = new mongoose.Schema(
       // Array of Reward IDs the user has redeemed
       { type: ObjectId, ref: "Rewards" },
     ],
+    savedEnergy: Number,
+    followers: [{ type: ObjectId, ref: "User" },],
+    posts: [{ type: ObjectId, ref: "Post" },],
   },
   { timestamps: true }
 );
