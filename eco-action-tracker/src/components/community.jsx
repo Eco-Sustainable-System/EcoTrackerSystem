@@ -295,7 +295,7 @@ const EcoGymEnergyPage = ({ user, posts }) => {
                     {/* Profile Card */}
                     <div className=" rounded-lg shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 animate-fade-in">
                         <div className="h-20 bg-gradient-to-r from-[#fdb713] to-blue-500 relative">
-                            <img src={user.profileImage} alt="Profile background" className="w-full h-full object-cover" />
+                            <img src={user.profileImage || "https://www.transparentpng.com/thumb/user/gray-user-profile-icon-png-fP8Q1P.png"} alt="Profile background" className="w-full h-full object-cover" />
                         </div>
                         <div className="p-4 relative">
                             <img src={user.picture} alt={`${user.firstName} ${user.lastName}`} className="w-20 h-20 rounded-full absolute -top-10 left-1/2 transform -translate-x-1/2 border-4 border-[#FAF8ED] shadow-lg" />
