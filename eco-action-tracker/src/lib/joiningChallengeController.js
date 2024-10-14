@@ -56,30 +56,17 @@ export const updateJoiningChallenge = async (id, challengeData) => {
   }
 };
 
-export const deleteJoiningChallenge = async (id) => {
+export const getJoinedChallengesByUserId = async (userId) => {
   try {
-    const deletedChallenge = await JoiningChallenge.findByIdAndDelete(id);
-    if (!deletedChallenge) {
-      throw new Error("Joining challenge not found");
-    }
-    return deletedChallenge;
-  } catch (error) {
-    throw new Error(`Error deleting joining challenge: ${error.message}`);
-  }
-};
-
-export const getUsersByChallengeId = async (challengeId) => {
-  try {
-    const users = await JoiningChallenge.find({ challengeId })
-      .populate("userId")
-      .populate("bikeId");
-
-    const userCount = users.length;
-
-    return { users, userCount };
+    const challenges = await JoiningChallenge.find({ userId }).populate(
+      "challengeId"
+    );
+    return {
+      count: challenges.length,
+    };
   } catch (error) {
     throw new Error(
-      `Error fetching users for challenge ID ${challengeId}: ${error.message}`
+      `Error fetching user's joined challenges: ${error.message}`
     );
   }
 };

@@ -1,4 +1,6 @@
 const Challenge = require("@/app/models/Challenge");
+const JoiningChallenge = require("@/app/models/JoiningChallenge");
+const jwt = require("jsonwebtoken");
 
 const createChallenge = async (challengeData) => {
   const challenge = new Challenge(challengeData);
@@ -31,37 +33,6 @@ const getChallengeById = async (id) => {
   }
 };
 
-const updateChallenge = async (id, challengeData) => {
-  try {
-    const updatedChallenge = await Challenge.findByIdAndUpdate(
-      id,
-      challengeData,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-    if (!updatedChallenge) {
-      throw new Error("Challenge not found");
-    }
-    return updatedChallenge;
-  } catch (error) {
-    throw new Error(`Error updating challenge: ${error.message}`);
-  }
-};
-
-const deleteChallenge = async (id) => {
-  try {
-    const deletedChallenge = await Challenge.findByIdAndDelete(id);
-    if (!deletedChallenge) {
-      throw new Error("Challenge not found");
-    }
-    return deletedChallenge;
-  } catch (error) {
-    throw new Error(`Error deleting challenge: ${error.message}`);
-  }
-};
-
 const updateProgress = async (challengeId) => {
   try {
     const challenge = await Challenge.findById(challengeId);
@@ -77,7 +48,6 @@ const updateProgress = async (challengeId) => {
       `Current Energy: ${currentEnergy}, Target Energy: ${targetEnergy}`
     );
 
-    // Check for division by zero
     if (targetEnergy === 0) {
       console.warn(
         `Target energy is zero for challenge ID ${challengeId}. Setting progress to 0.`
@@ -90,12 +60,10 @@ const updateProgress = async (challengeId) => {
       return;
     }
 
-    // Calculate progress percentage
     const progress = (currentEnergy / targetEnergy) * 100;
 
     console.log(`Progress calculated: ${progress}%`);
 
-    // Update the progress in the challenge document
     const updatedChallenge = await Challenge.findByIdAndUpdate(
       challengeId,
       { progress },
@@ -113,11 +81,45 @@ const updateProgress = async (challengeId) => {
   }
 };
 
+const getUserJoiningChallenges = async (authToken) => {
+  try {
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+    const userId = decoded.id;
+
+    const joiningChallenges = await JoiningChallenge.find({ userId });
+
+    const challengeIds = joiningChallenges.map((jc) => jc.challengeId);
+
+    const upcomingChallenges = await Challenge.find({
+      _id: { $in: challengeIds },
+      status: "upcoming",
+    });
+
+    return upcomingChallenges;
+  } catch (error) {
+    throw new Error(`Error fetching joining challenges: ${error.message}`);
+  }
+};
+
+const getUserCompletedChallenges = async (authToken) => {
+  try {
+    jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+
+    const completedChallenges = await Challenge.find({ status: "completed" });
+
+    console.log("Fetched completed challenges:", completedChallenges);
+
+    return completedChallenges;
+  } catch (error) {
+    throw new Error(`Error fetching completed challenges: ${error.message}`);
+  }
+};
+
 module.exports = {
   createChallenge,
   getAllChallenges,
   getChallengeById,
-  updateChallenge,
-  deleteChallenge,
+  getUserJoiningChallenges,
   updateProgress,
+  getUserCompletedChallenges,
 };
