@@ -1,5 +1,8 @@
 import dbConnect from "@/lib/mongodb";
-import { createEnergyLog } from "@/lib/energyLogController";
+import {
+  createEnergyLog,
+  getTotalEnergyGenerated,
+} from "@/lib/energyLogController";
 import jwt from "jsonwebtoken";
 
 export async function POST(req) {
@@ -27,12 +30,10 @@ export async function POST(req) {
   }
 
   const energyLogData = await req.json();
-
   energyLogData.userId = userId;
 
-
   try {
-    const energyLog = await createEnergyLog(energyLogData);
+    const energyLog = await createEnergyLog(energyLogData, userId); // Pass userId here
     return new Response(
       JSON.stringify({ message: "Energy log created successfully", energyLog }),
       {
@@ -46,4 +47,10 @@ export async function POST(req) {
       headers: { "Content-Type": "application/json" },
     });
   }
+}
+
+export async function GET(req) {
+  await dbConnect();
+
+  return await getTotalEnergyGenerated(req);
 }

@@ -1,7 +1,12 @@
 const EnergyLog = require("@/app/models/EnergyLog");
 const Challenge = require("@/app/models/Challenge");
+const User = require("@/app/models/User");
+import jwt from "jsonwebtoken";
 
-const updateCurrentEnergy = async (challengeId) => {
+const getRandomPoints = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1)) + min;
+
+const updateCurrentEnergy = async (challengeId, userId) => {
   try {
     const energyLogs = await EnergyLog.find({
       associatedChallenge: challengeId,
@@ -26,8 +31,7 @@ const updateCurrentEnergy = async (challengeId) => {
       `Current energy updated for challenge ID ${challengeId}: ${totalEnergyGenerated}`
     );
 
-    // Call updateProgress to update progress
-    await updateProgress(challengeId);
+    await updateProgress(challengeId, userId); // Pass userId here
   } catch (error) {
     console.error(
       `Error updating current energy for challenge ID ${challengeId}:`,
@@ -36,7 +40,7 @@ const updateCurrentEnergy = async (challengeId) => {
   }
 };
 
-const updateProgress = async (challengeId) => {
+const updateProgress = async (challengeId, userId) => {
   try {
     const challenge = await Challenge.findById(challengeId);
     if (!challenge) {
@@ -67,15 +71,53 @@ const updateProgress = async (challengeId) => {
 
     console.log(`Progress calculated: ${progress}%`);
 
+    let status = challenge.status;
+
+    console.log(`User ID for challenge ${challengeId}: ${userId}`);
+
+    if (currentEnergy >= targetEnergy) {
+      status = "completed";
+
+      const randomPoints = getRandomPoints(10, 40);
+      const userUpdate = await User.findByIdAndUpdate(
+        userId,
+        {
+          $addToSet: { completedChallenges: challengeId },
+          $inc: { points: randomPoints },
+        },
+        { new: true }
+      );
+
+      if (userUpdate) {
+        console.log(
+          `Challenge ID ${challengeId} added to user's completedChallenges and awarded ${randomPoints} points.`
+        );
+      } else {
+        console.error(`Failed to update user for ID ${userId}`);
+      }
+    }
+
     const updatedChallenge = await Challenge.findByIdAndUpdate(
       challengeId,
-      { progress },
+      { progress, status },
       { new: true }
     );
 
-    console.log(
-      `Progress updated for challenge ID ${challengeId}: ${updatedChallenge.progress}`
-    );
+    if (updatedChallenge) {
+      console.log(
+        `Progress and status updated for challenge ID ${challengeId}: ${updatedChallenge.progress}, Status: ${updatedChallenge.status}`
+      );
+    } else {
+      console.error(`Failed to update challenge status for ID ${challengeId}`);
+    }
+
+    if (updatedChallenge.status === "completed") {
+      console.log(`Challenge ID ${challengeId} is now marked as completed.`);
+    } else {
+      console.log(
+        `Challenge ID ${challengeId} status is still ${updatedChallenge.status}.`
+      );
+    }
   } catch (error) {
     console.error(
       `Error updating progress for challenge ID ${challengeId}:`,
@@ -84,12 +126,65 @@ const updateProgress = async (challengeId) => {
   }
 };
 
-const createEnergyLog = async (energyLogData) => {
-  const energyLog = new EnergyLog(energyLogData);
+const updateTotalCO2Reduction = async (userId) => {
   try {
+    const energyLogs = await EnergyLog.find({ userId });
+
+    const totalEnergyGenerated = energyLogs.reduce((total, log) => {
+      return total + log.energyGenerated;
+    }, 0);
+
+    const CO2ReductionPercentage = totalEnergyGenerated * 0.12;
+
+    await User.findByIdAndUpdate(
+      userId,
+      { totalCO2Reduction: CO2ReductionPercentage },
+      { new: true }
+    );
+
+    console.log(
+      `Updated total CO2 reduction for user ${userId}: ${CO2ReductionPercentage.toFixed(
+        2
+      )}%`
+    );
+  } catch (error) {
+    console.error(
+      `Error updating CO2 reduction for user ID ${userId}:`,
+      error.message
+    );
+  }
+};
+
+const createEnergyLog = async (energyLogData, userId) => {
+  try {
+    const challenge = await Challenge.findById(
+      energyLogData.associatedChallenge
+    );
+    if (!challenge) {
+      console.error(
+        `Challenge not found for ID ${energyLogData.associatedChallenge}`
+      );
+      throw new Error(
+        `Challenge not found for ID ${energyLogData.associatedChallenge}`
+      );
+    }
+
+    if (challenge.status === "completed") {
+      console.log(
+        `Challenge ID ${energyLogData.associatedChallenge} is already completed. No new energy log will be added.`
+      );
+      throw new Error(
+        `Challenge is already completed. No new energy log will be added.`
+      );
+    }
+
+    const energyLog = new EnergyLog(energyLogData);
     const savedLog = await energyLog.save();
 
-    await updateCurrentEnergy(savedLog.associatedChallenge);
+    console.log(`Energy log saved: ${savedLog}`);
+
+    await updateCurrentEnergy(savedLog.associatedChallenge, userId);
+    await updateTotalCO2Reduction(userId);
 
     return savedLog;
   } catch (error) {
@@ -98,7 +193,53 @@ const createEnergyLog = async (energyLogData) => {
   }
 };
 
+const getTotalEnergyGenerated = async (req) => {
+  const authHeader = req.headers.get("Authorization");
+  const token = authHeader ? authHeader.split(" ")[1] : null;
+
+  let userId;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      userId = decoded.id;
+    } catch (error) {
+      return new Response(JSON.stringify({ message: "Invalid token" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  } else {
+    return new Response(JSON.stringify({ message: "No token provided" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  try {
+    const energyLogs = await EnergyLog.find({ userId });
+    const totalEnergyGenerated = energyLogs.reduce((total, log) => {
+      return total + log.energyGenerated;
+    }, 0);
+
+    return new Response(JSON.stringify({ totalEnergyGenerated }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error(
+      `Error retrieving energy generated for user ID ${userId}:`,
+      error.message
+    );
+    return new Response(JSON.stringify({ message: "Error retrieving data" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+};
+
 module.exports = {
   createEnergyLog,
   updateCurrentEnergy,
+  updateTotalCO2Reduction,
+  getTotalEnergyGenerated,
 };
