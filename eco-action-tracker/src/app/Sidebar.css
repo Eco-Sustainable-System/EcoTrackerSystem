@@ -23,3 +23,20 @@
   scrollbar-width: thin; /* "auto" or "thin" */
   scrollbar-color: #000000 rgba(0, 0, 0, 0.1); /* thumb and track color */
 }
+
+/* For WebKit browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust width if needed */
+}
+
+::-webkit-scrollbar-track {
+  background: black; /* Track background */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: black; /* Scrollbar handle */
+  border-radius: 10px; /* Optional: for rounded scrollbars */
+  border: 2px solid black; /* Optional: for space around the handle */
+}
+
+/* For Firefox */
