@@ -181,7 +181,7 @@ export default function Navbar() {
             </li> : null}
           {user ?   <li>
               <Link
-                href="/Community"
+                href="/community-feed"
                 className="block py-2 px-3 text-[#FAF8ED] rounded hover:bg-[#fdb713] md:hover:bg-transparent md:hover:text-[#fdb713] md:p-0"
               >
                 Community
