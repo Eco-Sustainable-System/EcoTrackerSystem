@@ -16,8 +16,8 @@ const ThreeScene = () => {
       const init = () => {
         scene = new THREE.Scene();
 
-        // Set a dark background color
-        scene.background = new THREE.Color(0x1c1c1c);
+        // Set background color to #2d3134 for dark theme
+        scene.background = new THREE.Color(0x2d3134); // Updated background color
 
         camera = new THREE.PerspectiveCamera(
           75,
@@ -47,9 +47,9 @@ const ThreeScene = () => {
           new THREE.Float32BufferAttribute(vertices, 3)
         );
 
-        // Change particle color to white and randomize size
+        // Use white particles for contrast on #2d3134 background
         material = new THREE.PointsMaterial({
-          color: 0xffffff, // White color
+          color: 0xffffff, // White particles
           size: Math.random() * 2 + 1, // Random size between 1 and 3
           transparent: true,
           opacity: 0.8,

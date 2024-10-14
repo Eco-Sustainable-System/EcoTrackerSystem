@@ -178,7 +178,11 @@ const createEnergyLog = async (energyLogData, userId) => {
       );
     }
 
-    const energyLog = new EnergyLog(energyLogData);
+    const energyLog = new EnergyLog({
+      ...energyLogData,
+      bikeId: energyLogData.bikeId || null,
+    });
+
     const savedLog = await energyLog.save();
 
     console.log(`Energy log saved: ${savedLog}`);

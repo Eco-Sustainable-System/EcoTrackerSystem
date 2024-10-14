@@ -11,6 +11,7 @@ import {
   QrCode,
 } from "lucide-react";
 import "../../app/Sidebar.css";
+import Link from "next/link";
 
 const UserDashboard = ({ user = {} }) => {
   const userName =
@@ -138,36 +139,37 @@ const UserDashboard = ({ user = {} }) => {
   };
 
   return (
-    <div className="bg-gradient-to-br from-gray-800 to-gray-900 min-h-full p-4 space-y-4 md:p-6">
+    <div className="bg-[#2d3134] min-h-full p-4 space-y-4 md:p-6">
       <Card className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
         <h2 className="text-2xl font-bold text-white">
           {userName}'s Dashboard
         </h2>
         <div className="text-right text-sm md:text-base">
           <p className="font-semibold text-gray-300">
-            Total Points: <span className="text-orange-400">{userPoints}</span>
+            Total Points: <span className="text-[#fdb713]">{userPoints}</span>
           </p>
         </div>
       </Card>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <StatCard
-          icon={<Zap size={20} className="text-orange-400" />}
+          icon={<Zap size={20} className="text-white" />}
           title="Total Energy"
-          value={`${totalEnergyGenerated} kWh`}
+          value={`${totalEnergyGenerated.toFixed(2)} kWh`}
         />
+
         <StatCard
-          icon={<Leaf size={20} className="text-green-400" />}
+          icon={<Leaf size={20} className="text-white" />}
           title="CO2 Reduced"
           value={`${userCO2Reduced} kg`}
         />
         <StatCard
-          icon={<Trophy size={20} className="text-yellow-400" />}
+          icon={<Trophy size={20} className="text-white-400" />}
           title="Challenges Won"
           value={userChallengesWon}
         />
         <StatCard
-          icon={<Trophy size={20} className="text-yellow-400" />}
+          icon={<Trophy size={20} className="text-white-400" />}
           title="Challenges Joined"
           value={userChallengesJoined}
         />
@@ -202,36 +204,41 @@ const UserDashboard = ({ user = {} }) => {
 };
 
 const Card = ({ children, className = "" }) => (
-  <div className={`bg-gray-800 rounded-lg shadow-lg p-6 ${className}`}>
+  <div className={`bg-[#484c50] rounded-lg shadow-lg p-6 ${className}`}>
     {children}
   </div>
 );
 
 const StatCard = ({ icon, title, value }) => (
   <Card className="flex items-center space-x-4">
-    <div className="p-2 bg-orange-600 rounded-full">{icon}</div>
+    <div className="p-2 bg-[#fdb713] rounded-full">{icon}</div>
     <div>
       <p className="text-sm font-medium text-gray-300">{title}</p>
-      <p className="text-2xl font-bold text-orange-400">{value}</p>
+      <p className="text-2xl font-bold text-[#fdb713]">{value}</p>
     </div>
   </Card>
 );
 
 const Progress = ({ value }) => (
-  <div className="w-full bg-orange-200 rounded-full h-2">
+  <div className="w-full bg-[#fdb713] rounded-full h-2">
     <div
-      className="bg-orange-400 h-2 rounded-full"
+      className="bg-gradient-to-r from-[#fdb713] to-orange-600 h-2 rounded-full"
       style={{ width: `${value}%` }}
     />
   </div>
 );
 
 const ChallengeCard = ({ challenge }) => {
+  console.log(challenge);
   const [expanded, setExpanded] = useState(false);
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const handleQrButtonClick = () => {
+    localStorage.setItem("challengeId", challenge._id);
   };
 
   return (
@@ -243,21 +250,21 @@ const ChallengeCard = ({ challenge }) => {
           </h4>
           <div className="flex items-center space-x-2">
             {expanded ? (
-              <ChevronUp size={20} className="text-white" />
+              <ChevronUp size={20} className="text-[#fdb713]" />
             ) : (
-              <ChevronDown size={20} className="text-white" />
+              <ChevronDown size={20} className="text-[#fdb713]" />
             )}
           </div>
         </div>
         <p className="text-sm text-gray-400 mt-2">
           Progress: {challenge.progress}%
-        </p>{" "}
+        </p>
         <Progress value={challenge.progress} />
       </div>
       {expanded && (
-        <div className="mt-4 pt-4 border-t border-orange-200">
+        <div className="mt-4 pt-4 border-t border-[#fdb713]">
           <div className="flex items-center space-x-2">
-            <Bike size={20} className="text-orange-400" />
+            <Bike size={20} className="text-[#fdb713]" />
             <span className="text-sm text-gray-400">
               Target Energy : {challenge.targetEnergy}
             </span>
@@ -270,10 +277,15 @@ const ChallengeCard = ({ challenge }) => {
             <span className="font-semibold">End:</span>{" "}
             {formatDate(challenge?.endDate)} at {challenge?.endHour}
           </p>
-          <button className="mt-4 bg-orange-500 w-[10rem] hover:bg-orange-600 text-white rounded-full px-6 py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:ring-opacity-50 shadow-lg flex items-center">
-            <QrCode className="mr-2 h-5 w-5" />
-            <span>Scan QR</span>
-          </button>
+          <Link href="/qr" passHref>
+            <button
+              onClick={handleQrButtonClick}
+              className="mt-4 bg-[#fdb713] w-[10rem] hover:bg-orange-600 text-white rounded-full px-6 py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#fdb713] focus:ring-opacity-50 shadow-lg flex items-center"
+            >
+              <QrCode className="mr-2 h-5 w-5" />
+              <span>Scan QR</span>
+            </button>
+          </Link>
         </div>
       )}
     </Card>
@@ -283,16 +295,15 @@ const ChallengeCard = ({ challenge }) => {
 const CompletedChallengeCard = ({ challenge }) => (
   <Card>
     <div className="flex justify-between items-center mb-2">
-      <h4 className="text-lg font-semibold text-green-800">
+      <h4 className="text-lg font-semibold text-[#fdb713]">
         {challenge.title}
       </h4>
-      <span className="text-sm font-medium text-green-600">
+      <span className="text-sm font-medium text-[#fdb713]">
         {challenge.ranking}
       </span>
     </div>
-    <p className="text-gray-600"></p>
     <div className="mt-2 flex items-center space-x-2">
-      <Bike size={20} className="text-green-600" />
+      <Bike size={20} className="text-[#fdb713]" />
       Target Energy : {challenge.targetEnergy}
     </div>
   </Card>
@@ -309,8 +320,8 @@ const Tabs = ({ tabs }) => {
             key={index}
             className={`py-2 px-4 font-medium ${
               activeTab === index
-                ? "text-orange-400 border-b-2 border-orange-400"
-                : "text-gray-500 hover:text-orange-400"
+                ? "text-[#fdb713] border-b-2 border-[#fdb713]"
+                : "text-gray-500 hover:text-[#fdb713]"
             }`}
             onClick={() => setActiveTab(index)}
           >
