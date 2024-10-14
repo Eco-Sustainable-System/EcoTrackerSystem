@@ -57,7 +57,7 @@ const CustomAlert = () => {
 
   useEffect(() => {
     fetchReminder();
-    const intervalId = setInterval(fetchReminder, 10000);
+    const intervalId = setInterval(fetchReminder, 500000);
     return () => clearInterval(intervalId);
   }, []);
 

@@ -30,13 +30,13 @@ export default function EnhancedInteractiveText() {
     };
   }, []);
 
-  const letters = ["K", "E"]; // Changed letters to represent Kinetic Energy
-  const colors = ["#f39c12", "#e67e22"]; // Colors representing energy and motion
+  const letters = ["K", "E"]; // Represents Kinetic Energy
+  const colors = ["#fdb713", "#fdb713"]; // Use yellow (#fdb713) for the letters
 
   return (
     <div
       ref={containerRef}
-      className="relative h-screen w-full bg-gradient-to-br from-yellow-400 to-orange-600 overflow-hidden"
+      className="relative h-screen w-full bg-black overflow-hidden"
     >
       <ThreeScene />
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -47,7 +47,7 @@ export default function EnhancedInteractiveText() {
               className="text-9xl font-extrabold"
               style={{
                 color: colors[index],
-                textShadow: "0 0 20px rgba(255,255,255,0.7)",
+                textShadow: "0 0 30px rgba(253, 183, 19, 0.7)", // Yellow glow effect
               }}
               animate={{
                 x: mousePosition.x * 50 - 25,
@@ -82,7 +82,7 @@ export default function EnhancedInteractiveText() {
           step you take counts towards a sustainable future!
         </motion.p>
         <motion.button
-          className="mt-8 px-6 py-3 bg-white text-yellow-700 rounded-full text-xl font-semibold hover:bg-yellow-100 transition-colors duration-300"
+          className="mt-8 px-6 py-3 bg-yellow-500 text-black rounded-full text-xl font-semibold hover:bg-yellow-600 transition-colors duration-300"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}

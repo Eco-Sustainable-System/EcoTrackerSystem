@@ -6,10 +6,11 @@ import jsQR from "jsqr";
 
 const QRCodeReaderPage = () => {
   const [qrCodeMessage, setQrCodeMessage] = useState(null);
+  console.log("qrCodeMessage", qrCodeMessage);
   const [scanning, setScanning] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState(null); // New state for the uploaded image
+  const [uploadedImage, setUploadedImage] = useState(null);
   const [neonPosition, setNeonPosition] = useState({ x: 50, y: 50 });
   const [isDragging, setIsDragging] = useState(false);
 
@@ -45,18 +46,16 @@ const QRCodeReaderPage = () => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const imageDataUrl = e.target.result;
-        setUploadedImage(imageDataUrl); // Set the uploaded image to state
+        setUploadedImage(imageDataUrl);
 
         const img = new Image();
         img.onload = () => {
-          // Create a canvas to decode the image
           const canvas = document.createElement("canvas");
           const ctx = canvas.getContext("2d");
           canvas.width = img.width;
           canvas.height = img.height;
           ctx.drawImage(img, 0, 0);
 
-          // Get image data and decode the QR code
           const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
           const code = jsQR(imageData.data, imageData.width, imageData.height);
 
@@ -72,7 +71,7 @@ const QRCodeReaderPage = () => {
     }
   };
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = () => {
     setIsDragging(true);
   };
 
@@ -97,6 +96,68 @@ const QRCodeReaderPage = () => {
       document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDragging]);
+
+  const submitData = async () => {
+    const authToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("authToken="))
+      ?.split("=")[1];
+
+    const associatedChallenge = localStorage.getItem("challengeId");
+
+    if (!authToken || !associatedChallenge || !qrCodeMessage) {
+      setErrorMessage("Missing required data.");
+      return;
+    }
+
+    // Parse the qrCodeMessage if it's a string
+    let parsedQrCodeMessage;
+    try {
+      parsedQrCodeMessage = JSON.parse(qrCodeMessage);
+    } catch (error) {
+      setErrorMessage("Failed to parse QR code message.");
+      return;
+    }
+
+    // Ensure the required fields exist in the parsed QR code message
+    const { energyGenerated, distance, currentSpeed } = parsedQrCodeMessage;
+    if (!energyGenerated || !distance || !currentSpeed) {
+      setErrorMessage("Incomplete QR code data.");
+      return;
+    }
+
+    const body = {
+      associatedChallenge,
+      energyGenerated,
+      distance,
+      currentSpeed,
+    };
+
+    setLoading(true);
+    try {
+      const response = await fetch("http://localhost:3000/api/energyLogs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      console.log("Data submitted successfully:", responseData);
+      // Handle success (e.g., show a success message, redirect, etc.)
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      setErrorMessage("Failed to submit data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -221,6 +282,13 @@ const QRCodeReaderPage = () => {
             <p className="break-words text-[#faf8ed]">{qrCodeMessage}</p>
           </div>
         )}
+
+        <button
+          onClick={submitData}
+          className="mt-4 px-6 py-3 bg-[#fdb713] rounded-lg text-[#2d3134] transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#faf8ed]"
+        >
+          Submit Data
+        </button>
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const energyLogSchema = new mongoose.Schema({
   bikeId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Bikes",
-    required: true,
+    required: false,
   },
   energyGenerated: {
     type: Number,

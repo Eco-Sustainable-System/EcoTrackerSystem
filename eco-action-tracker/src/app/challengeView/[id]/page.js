@@ -173,7 +173,8 @@ const ChallengeDetailsPage = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to join challenge");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Something went wrong");
       }
 
       const data = await response.json();
@@ -184,7 +185,7 @@ const ChallengeDetailsPage = () => {
       await fetchParticipants();
     } catch (error) {
       console.error("Error joining challenge:", error);
-      toast.error("Error joining challenge: " + error.message);
+      toast.error(error.message);
     } finally {
       setIsJoinModalOpen(false);
       setSelectedBike("");

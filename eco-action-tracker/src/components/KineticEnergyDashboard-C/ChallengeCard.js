@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp, Bell, Users, Trophy, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import "../../app/Sidebar.css";
+import "../../app/Sidebar.css"; // Ensure your CSS file includes styles for the new theme
 
 const ChallengeCardspage = ({ challenge, onJoin, challengeId }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [participants, setParticipants] = useState(0);
-  console.log(participants);
 
   const router = useRouter();
 
@@ -57,16 +56,16 @@ const ChallengeCardspage = ({ challenge, onJoin, challengeId }) => {
   return (
     <>
       <motion.div
-        className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl p-6 mb-6 shadow-lg hover:shadow-xl transition-all duration-300"
+        className="bg-gradient-to-br from-[#484c50] to-[#4a4e53] rounded-xl p-6 mb-6 shadow-lg hover:shadow-xl transition-all duration-300"
         whileHover={{ scale: 1.02 }}
       >
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-2xl font-bold text-orange-300">
+          <h3 className="text-2xl font-bold text-[#fdb713]">
             {challenge.name}
           </h3>
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-orange-400 hover:text-orange-300 transition-colors duration-200"
+            className="text-[#fdb713] hover:text-white transition-colors duration-200"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
@@ -79,35 +78,35 @@ const ChallengeCardspage = ({ challenge, onJoin, challengeId }) => {
             alt={challenge.name}
             className="w-full h-48 object-cover rounded-lg shadow-md"
           />
-          <div className="absolute top-2 right-2 bg-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
+          <div className="absolute top-2 right-2 bg-[#fdb713] text-black px-3 py-1 rounded-full text-sm font-semibold">
             {challenge.status}
           </div>
         </div>
-        <p className="text-md text-gray-300 mb-6 leading-relaxed">
+        <p className="text-md text-white mb-6 leading-relaxed">
           {challenge.description}
         </p>
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <span className="text-md font-medium text-gray-300 flex items-center">
-              <Trophy size={20} className="mr-2 text-orange-400" /> Progress
+            <span className="text-md font-medium text-white flex items-center">
+              <Trophy size={20} className="mr-2 text-[#fdb713]" /> Progress
             </span>
-            <span className="text-lg font-bold text-orange-400">
+            <span className="text-lg font-bold text-[#fdb713]">
               {challenge.progress}%
             </span>
           </div>
           <div className="w-full bg-gray-700 rounded-full h-3">
             <motion.div
-              className="bg-gradient-to-r from-orange-400 to-orange-600 h-3 rounded-full"
+              className="bg-gradient-to-r from-[#fdb713] to-orange-600 h-3 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${challenge.progress}%` }}
               transition={{ duration: 1, ease: "easeOut" }}
             ></motion.div>
           </div>
           <div className="flex justify-between items-center">
-            <span className="text-md font-medium text-gray-300 flex items-center">
-              <Zap size={20} className="mr-2 text-orange-400" /> Energy
+            <span className="text-md font-medium text-white flex items-center">
+              <Zap size={20} className="mr-2 text-[#fdb713]" /> Energy
             </span>
-            <span className="text-lg font-bold text-orange-400">
+            <span className="text-lg font-bold text-[#fdb713]">
               {challenge.currentEnergy} / {challenge.targetEnergy} kWh
             </span>
           </div>
@@ -121,18 +120,16 @@ const ChallengeCardspage = ({ challenge, onJoin, challengeId }) => {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="flex items-center justify-between text-gray-300">
+              <div className="flex items-center justify-between text-white">
                 <span className="flex items-center">
-                  <Users size={20} className="mr-2 text-orange-400" />{" "}
+                  <Users size={20} className="mr-2 text-[#fdb713]" />{" "}
                   Participants
                 </span>
-                <span className="font-bold text-orange-400">
-                  {participants}
-                </span>
+                <span className="font-bold text-[#fdb713]">{participants}</span>
               </div>
               <motion.button
                 onClick={handleViewDetails}
-                className="mt-4 w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg p-3 hover:from-orange-600 hover:to-orange-700 transition-colors duration-200 font-semibold text-lg shadow-md"
+                className="mt-4 w-full bg-gradient-to-r from-[#fdb713] to-orange-600 text-black rounded-lg p-3 hover:from-orange-600 hover:to-orange-700 transition-colors duration-200 font-semibold text-lg shadow-md"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
