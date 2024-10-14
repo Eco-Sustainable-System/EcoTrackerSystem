@@ -3,16 +3,15 @@ import {
   createJoiningChallenge,
   getAllJoiningChallenges,
   getJoiningChallengeById,
-  updateJoiningChallenge,
-  deleteJoiningChallenge,
   getUsersByChallengeId,
+  getJoinedChallengesByUserId,
 } from "@/lib/joiningChallengeController";
+import JoiningChallenge from "@/app/models/JoiningChallenge";
 import jwt from "jsonwebtoken";
 
 export async function POST(req) {
   await dbConnect();
 
-  // Get the token from the Authorization header
   const token = req.headers.get("Authorization")?.split(" ")[1];
 
   if (!token) {
@@ -23,26 +22,33 @@ export async function POST(req) {
   }
 
   try {
-    // Verify the token and decode it
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log("Decoded Token:", decoded); // Log the decoded token
 
-    // Ensure the userId is present in the decoded token
-    const userId = decoded.id; // Assuming userId is in the token payload
+    const userId = decoded.id;
     if (!userId) {
       throw new Error("Invalid token: userId not found");
     }
 
-    // Parse the request body for challenge data
     const challengeData = await req.json();
-    challengeData.userId = userId; // Set userId from the token payload
+    challengeData.userId = userId;
 
-    console.log("Challenge Data:", challengeData); // Log the challenge data
+    const existingChallenge = await JoiningChallenge.findOne({
+      userId,
+      challengeId: challengeData.challengeId,
+    });
 
-    // Create the joining challenge
+    if (existingChallenge) {
+      return new Response(
+        JSON.stringify({ message: "You have already joined this challenge." }),
+        {
+          status: 409,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     const challenge = await createJoiningChallenge(challengeData);
 
-    // Return a success response
     return new Response(
       JSON.stringify({
         message: "Joining challenge created successfully",
@@ -54,7 +60,7 @@ export async function POST(req) {
       }
     );
   } catch (error) {
-    console.error("Error:", error); // Log any error
+    console.error("Error:", error);
     return new Response(JSON.stringify({ message: error.message }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
@@ -64,13 +70,32 @@ export async function POST(req) {
 
 export async function GET(req) {
   await dbConnect();
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-  const challengeId = searchParams.get("challengeId"); // Get challengeId if provided
+  const token = req.headers.get("Authorization")?.split(" ")[1];
+
+  if (!token) {
+    return new Response(JSON.stringify({ message: "No token provided" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const userId = decoded.id;
+
+    if (userId) {
+      const challenges = await getJoinedChallengesByUserId(userId);
+      return new Response(JSON.stringify(challenges), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    const challengeId = searchParams.get("challengeId");
+
     if (challengeId) {
-      // Fetch users by challenge ID
       const users = await getUsersByChallengeId(challengeId);
       return new Response(JSON.stringify(users), {
         status: 200,
@@ -89,56 +114,6 @@ export async function GET(req) {
         headers: { "Content-Type": "application/json" },
       });
     }
-  } catch (error) {
-    return new Response(JSON.stringify({ message: error.message }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
-
-
-export async function PUT(req) {
-  await dbConnect();
-  const { id, ...challengeData } = await req.json();
-
-  try {
-    const updatedChallenge = await updateJoiningChallenge(id, challengeData);
-    return new Response(
-      JSON.stringify({
-        message: "Joining challenge updated successfully",
-        updatedChallenge,
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-  } catch (error) {
-    return new Response(JSON.stringify({ message: error.message }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-}
-
-export async function DELETE(req) {
-  await dbConnect();
-  const { searchParams } = new URL(req.url);
-  const id = searchParams.get("id");
-
-  try {
-    const deletedChallenge = await deleteJoiningChallenge(id);
-    return new Response(
-      JSON.stringify({
-        message: "Joining challenge deleted successfully",
-        deletedChallenge,
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
   } catch (error) {
     return new Response(JSON.stringify({ message: error.message }), {
       status: 404,

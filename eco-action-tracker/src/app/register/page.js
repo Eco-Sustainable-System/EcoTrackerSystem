@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { Wind, Sun, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { Wind, Sun, AlertTriangle, Eye, EyeOff,X } from 'lucide-react';
 import axios from "axios";
 import GoogleButton from "@/components/GoogleButton";
+import Swal from 'sweetalert2';
 function SignUp() {
   const router = useRouter();
   const [FirstName, setFirstName] = useState("");
@@ -125,8 +126,14 @@ function SignUp() {
 
   return (
     <div className="min-h-screen bg-[#2D3134] flex items-center justify-center p-4">
-      <div className="bg-[#FAF8ED] rounded-2xl shadow-2xl w-full max-w-md p-8 space-y-6">
+      <div className="bg-[#FAF8ED] rounded-2xl shadow-2xl w-full max-w-md p-8 space-y-6 relative">
         <div className="flex justify-center mb-6">
+      <button
+          onClick={() => router.push('/')}
+          className="absolute top-4 right-4 text-[#2D3134] hover:text-[#fdb713] transition-colors duration-300"
+        >
+          <X className="w-6 h-6" />
+        </button>
           <Link href="/"><Wind className="text-[#fdb713] w-12 h-12 mr-2" /></Link>
           <Link href="/"><Sun className="text-[#fdb713] w-12 h-12" /></Link>
         </div>

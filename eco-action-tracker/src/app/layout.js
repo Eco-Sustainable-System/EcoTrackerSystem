@@ -1,8 +1,8 @@
-// src/app/layout.js
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import SessionLayout from "@/components/SessionLayout"; // استيراد SessionLayout
+import SessionLayout from "@/components/SessionLayout";
+import CustomAlert from "@/components/CustomAlert";
 
 export default function RootLayout({ children }) {
   return (
@@ -13,6 +13,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
         </SessionLayout>
+        <CustomAlert />
       </body>
     </html>
   );

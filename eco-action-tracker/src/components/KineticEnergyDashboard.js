@@ -23,23 +23,30 @@ const KineticEnergyDashboard = () => {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [user, setUser] = useState({
-    name: "John Doe",
-    totalPoints: 1000,
-    totalEnergy: 500,
-    co2Reduced: 15,
-    currentChallenges: [
-      { name: "City Lights Challenge", progress: 75 },
-      { name: "Green Commute", progress: 50 },
-    ],
-  });
+  const [user, setUser] = useState([]);
 
   const isDragging = useRef(false);
   const initialPosition = useRef(0);
   const dragSide = useRef(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/challenges")
+    const getAuthToken = () => {
+      const cookies = document.cookie.split("; ");
+      const tokenCookie = cookies.find((cookie) =>
+        cookie.startsWith("authToken=")
+      );
+      return tokenCookie ? tokenCookie.split("=")[1] : null;
+    };
+
+    const authToken = getAuthToken();
+
+    fetch("http://localhost:3000/api/challenges", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`, // Use the authToken from the cookie
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         setChallenges(data);
@@ -50,6 +57,36 @@ const KineticEnergyDashboard = () => {
         console.error("Error fetching challenges:", error);
         setError("Failed to load challenges.");
         setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const getTokenFromCookie = () => {
+      const cookieName = "authToken";
+      const cookieValue = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith(cookieName))
+        ?.split("=")[1];
+
+      return cookieValue;
+    };
+
+    const token = getTokenFromCookie();
+
+    fetch("http://localhost:3000/api/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+        setError("Failed to load user data.");
       });
   }, []);
 
