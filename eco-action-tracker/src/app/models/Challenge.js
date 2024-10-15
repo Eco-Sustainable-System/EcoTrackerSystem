@@ -1,12 +1,59 @@
-const mongoose = require('mongoose');
+// models/challenge.js
 
-const challengeSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, required: true },
-  type: { type: String, enum: ['personal', 'community'], default: 'personal' },
-  progress: { type: Number, default: 0 }, // Progress percentage
-  goal: { type: Number, required: true }, // Goal (e.g., number of bottles saved)
-  usersParticipating: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
-});
+import mongoose from "mongoose";
 
-module.exports = mongoose.model('Challenge', challengeSchema);
+const ChallengeSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    targetEnergy: {
+      type: Number,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    startHour: {
+      type: String, // You can change this to Date if you prefer a complete timestamp
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
+    endHour: {
+      type: String, // Same as above
+      required: true,
+    },
+    thumbnail: {
+      type: String,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["upcoming", "active", "completed", "canceled"],
+      default: "upcoming",
+    },
+    progress: {
+      type: Number,
+      default: 0,
+    },
+    delete: {
+      type: Boolean,
+      default: false, // Indicates if the challenge is deleted (soft delete)
+    },
+  },
+  { timestamps: true }
+); // Automatically adds createdAt and updatedAt fields
+
+const Challenge =
+  mongoose.models.Challenge || mongoose.model("Challenge", ChallengeSchema);
+
+export default Challenge;
