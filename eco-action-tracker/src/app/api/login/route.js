@@ -35,7 +35,11 @@ export async function POST(req) {
 
   // إعداد الرد مع رمز التوثيق في الكوكيز
   const response = NextResponse.json(
-    { message: "Login successful" },
+    {
+      message: "Login successful",
+      role: user.role,
+      userId: user.id,
+    },
     { status: 200 }
   );
 

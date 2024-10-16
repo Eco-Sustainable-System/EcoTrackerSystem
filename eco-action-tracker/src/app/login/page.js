@@ -54,7 +54,11 @@ function LogIn() {
             timerProgressBar: true, // Optional: show progress bar
             showConfirmButton: false, // Hide confirm button
         }).then(() => {
-            router.push("/"); // Redirect after message
+          if (response.data.role === "admin") {
+            router.push("/admin");
+          } else {
+            router.push("/");
+          }
         });
 
     } catch (error) {
