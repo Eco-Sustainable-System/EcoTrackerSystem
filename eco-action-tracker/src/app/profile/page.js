@@ -147,9 +147,9 @@ const ProfilePage = () => {
         <div className="relative px-4 flex flex-col sm:flex-row sm:justify-between sm:items-end">
           <div className="relative inline-block -mt-16 sm:-mt-20 mb-4 sm:mb-0">
             <img
-              src={newProfilePicture ? URL.createObjectURL(newProfilePicture) : (userData.picture || "/api/placeholder/100/100")}
+              src={newProfilePicture ? URL.createObjectURL(newProfilePicture) : (userData.picture || "https://www.transparentpng.com/thumb/user/gray-user-profile-icon-png-fP8Q1P.png")}
               alt="Profile Picture"
-              className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-[#FAF8ED] object-cover shadow-md"
+              className="w-24 h-24 sm:w-32 bg-white sm:h-32 rounded-full border-2 border-[#FAF8ED] object-cover shadow-md"
             />
             <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <label htmlFor="profile-upload" className="cursor-pointer transform hover:scale-110 transition-transform duration-200">

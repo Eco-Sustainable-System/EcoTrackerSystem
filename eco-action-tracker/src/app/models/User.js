@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
+function generateRandomId() {
+  return Math.floor(1000000000 + Math.random() * 9000000000).toString();
+}
 const userSschema = new mongoose.Schema(
   {
     firstName: { type: String },
@@ -54,7 +57,10 @@ const userSschema = new mongoose.Schema(
       // Custom reminders set by the user for motivation
       { type: String },
     ],
-    googleId: { type: String },
+    googleId: {
+      type: String,
+      default: generateRandomId, // تعيين الديفولت باستخدام الدالة
+    },
     bikes: [
       // Custom reminders set by the user for motivation
       { type: String },

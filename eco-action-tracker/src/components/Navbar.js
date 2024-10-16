@@ -48,7 +48,7 @@ export default function Navbar() {
     fetchData();
   }, [pathname === "/"]);
 
-  const isAuthPage = pathname === "/register" || pathname === "/login";
+  const isAuthPage = pathname === "/register" || pathname === "/login" ;
 
   if (isAuthPage) return null; // لا تعرض Navbar في صفحات التسجيل وتسجيل الدخول
 
@@ -60,7 +60,7 @@ export default function Navbar() {
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <img
-            src="https://cdn.discordapp.com/attachments/993570904544124972/1293862383730557021/Screenshot_2024-10-10_120627.png?ex=6708eabf&is=6707993f&hm=774ba707b3f3c617c27944f4d072544136141676d9eca8ef607bc403f301d55c&"
+            src="https://cdn.discordapp.com/attachments/993570904544124972/1293862383730557021/Screenshot_2024-10-10_120627.png?ex=67102aff&is=670ed97f&hm=6be8176bccadbbb8ed58455a185dcc19275a9522c0fa9ce7666b4e163e81e9f1&"
             className="h-8 rounded-full"
             alt="Logo"
           />

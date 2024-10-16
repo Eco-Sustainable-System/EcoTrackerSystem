@@ -45,6 +45,10 @@ const challengeSchema = new mongoose.Schema({
     enum: ["active", "completed", "upcoming"],
     default: "upcoming",
   },
+  delete: {
+    type: Boolean,
+    default: false, // Indicates if the challenge is deleted (soft delete)
+  },
   createdAt: {
     type: Date,
     default: Date.now,

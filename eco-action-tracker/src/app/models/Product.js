@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// src/app/models/Product.js
+import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -6,7 +7,10 @@ const productSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   category: { type: String },
   stock: { type: Number, default: 0 },
-  ecoBenefits: { type: String } // Describe the eco-friendly impact
+  ecoBenefits: { type: String },
 });
 
-module.exports = mongoose.model('Product', productSchema);
+// Check if the model already exists
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+
+export default Product;
