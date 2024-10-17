@@ -4,103 +4,69 @@ import { Battery, Zap, Wind, Sun, Droplet, DollarSign, Award, X } from 'lucide-r
 
 const products = [
   {
-    title: "SolarFlare Panel Kit",
-    description: "High-efficiency solar panels for residential use",
+    title: "Solar Garden Lights",
+    description: "Illuminate your garden sustainably with solar-powered LED lights.",
     icon: <Sun className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#87CEEB" />
-        <rect x="10" y="10" width="80" height="80" fill="#4169E1" />
-        <circle cx="50" cy="50" r="30" fill="#FFD700" />
-      </svg>
-    ),
-    metric: "5kW capacity",
-    price: 2999.99,
-    points: 29999,
+    image: "https://www.thesolarcentre.co.uk/images/products/so2nsgl.jpg", // Replace with actual image URL
+    metric: "Up to 12 hours of illumination",
+    price: 49.99,
+    points: 499,
   },
   {
-    title: "WindWhisper Turbine",
-    description: "Compact wind turbine for urban environments",
-    icon: <Wind className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#87CEEB" />
-        <path d="M50 20 L80 80 L20 80 Z" fill="#FFFFFF" />
-        <circle cx="50" cy="50" r="10" fill="#C0C0C0" />
-      </svg>
-    ),
-    metric: "3kW output",
-    price: 1499.99,
-    points: 14999,
-  },
-  {
-    title: "HydroFlow Home System",
-    description: "Micro-hydro power generator for properties with water sources",
+    title: "Compost Bin",
+    description: "Transform kitchen waste into nutrient-rich compost for your garden.",
     icon: <Droplet className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#4169E1" />
-        <path d="M20 80 Q50 20 80 80 Z" fill="#FFFFFF" />
-        <circle cx="50" cy="60" r="10" fill="#C0C0C0" />
-      </svg>
-    ),
-    metric: "2kW continuous",
-    price: 3499.99,
-    points: 34999,
+    image: "https://www.planetnatural.com/wp-content/uploads/2023/01/compost-tumbler.jpg", // Replace with actual image URL
+    metric: "Holds up to 80 gallons",
+    price: 79.99,
+    points: 799,
   },
   {
-    title: "BioVolt Converter",
-    description: "Convert organic waste into electricity",
+    title: "Rain Barrel Kit",
+    description: "Collect and reuse rainwater for irrigation and household use.",
+    icon: <Droplet className="h-6 w-6 text-[#fdb713]" />,
+    image: "https://m.media-amazon.com/images/I/91IDgQL9JaL._AC_UF350,350_QL80_.jpg", // Replace with actual image URL
+    metric: "Capacity: 50 gallons",
+    price: 119.99,
+    points: 1199,
+  },
+  {
+    title: "Eco-Friendly Cleaning Kit",
+    description: "A set of biodegradable cleaning products that are safe for your home and the environment.",
     icon: <Zap className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#228B22" />
-        <path d="M30 70 L50 30 L70 70 L50 50 Z" fill="#FFD700" />
-      </svg>
-    ),
-    metric: "500W output",
-    price: 999.99,
-    points: 9999,
+    image: "https://mlcvmo0gntjk.i.optimole.com/cb:ICH-.67306/w:1046/h:1045/q:87/f:best/ig:avif/https://www.ecos.com/wp-content/uploads/2023/04/ECOS-household-cleaners-1-updated.jpg", // Replace with actual image URL
+    metric: "Includes 5 essential cleaners",
+    price: 39.99,
+    points: 399,
   },
   {
-    title: "EcoCharge Battery Bank",
-    description: "High-capacity storage for renewable energy",
-    icon: <Battery className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#D3D3D3" />
-        <rect x="10" y="30" width="80" height="40" fill="#32CD32" />
-        <rect x="90" y="40" width="10" height="20" fill="#32CD32" />
-      </svg>
-    ),
-    metric: "10kWh capacity",
-    price: 4999.99,
-    points: 49999,
+    title: "Reusable Beeswax Wraps",
+    description: "Eco-friendly alternative to plastic wrap for food storage.",
+    icon: <Award className="h-6 w-6 text-[#fdb713]" />,
+    image: "https://i.etsystatic.com/13457690/r/il/8272ee/2897314011/il_570xN.2897314011_3673.jpg", // Replace with actual image URL
+    metric: "Set of 3 wraps in various sizes",
+    price: 19.99,
+    points: 199,
   },
   {
-    title: "SmartGrid Home Hub",
-    description: "Intelligent energy management system",
-    icon: <Zap className="h-6 w-6 text-[#fdb713]" />,
-    image: (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" className="w-full h-48">
-        <rect width="100" height="100" fill="#F0F0F0" />
-        <rect x="20" y="20" width="60" height="60" fill="#4169E1" />
-        <circle cx="50" cy="50" r="20" fill="#FFD700" />
-        <path d="M50 30 L70 50 L50 70 L30 50 Z" fill="#FFFFFF" />
-      </svg>
-    ),
-    metric: "30% energy savings",
-    price: 799.99,
-    points: 7999,
+    title: "Bamboo Toothbrush Set",
+    description: "Sustainable bamboo toothbrushes to reduce plastic waste.",
+    icon: <Award className="h-6 w-6 text-[#fdb713]" />,
+    image: "https://moonbreezecrafts.com/cdn/shop/files/BambooToothbrushSoftBristle4-Pack_NaturalSoftToothbrushesforAdults_BlackCharcoalToothbrushesIncluded_EcoFriendlyWoodenToothbrushesSoftBristles_BiodegradableBambooToothbrushes-134.jpg?v=1706386107&width=1946", // Replace with actual image URL
+    metric: "Set of 4 toothbrushes",
+    price: 14.99,
+    points: 149,
   },
 ];
+
+
 
 const ProductCard = ({ product, onBuy }) => {
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
   return (
     <div className="bg-[#FAF8ED] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300">
-      <div className="w-full h-48">{product.image}</div>
+      <img className="w-full h-80" src={product.image} />
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <div className="bg-[#2D3134] rounded-full p-2">{product.icon}</div>
@@ -111,17 +77,15 @@ const ProductCard = ({ product, onBuy }) => {
         <div className="flex justify-between items-center mb-4">
           <div className="flex space-x-2">
             <button
-              className={`px-3 py-1 rounded-full text-sm ${
-                paymentMethod === 'cash' ? 'bg-[#2D3134] text-[#FAF8ED]' : 'bg-gray-200 text-[#2D3134]'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm ${paymentMethod === 'cash' ? 'bg-[#2D3134] text-[#FAF8ED]' : 'bg-gray-200 text-[#2D3134]'
+                }`}
               onClick={() => setPaymentMethod('cash')}
             >
               Cash
             </button>
             <button
-              className={`px-3 py-1 rounded-full text-sm ${
-                paymentMethod === 'points' ? 'bg-[#2D3134] text-[#FAF8ED]' : 'bg-gray-200 text-[#2D3134]'
-              }`}
+              className={`px-3 py-1 rounded-full text-sm ${paymentMethod === 'points' ? 'bg-[#2D3134] text-[#FAF8ED]' : 'bg-gray-200 text-[#2D3134]'
+                }`}
               onClick={() => setPaymentMethod('points')}
             >
               Points
@@ -131,7 +95,7 @@ const ProductCard = ({ product, onBuy }) => {
             {paymentMethod === 'cash' ? `$${product.price.toFixed(2)}` : `${product.points} pts`}
           </span>
         </div>
-        <button 
+        <button
           className="w-full bg-[#2D3134] text-[#FAF8ED] py-2 rounded-full hover:bg-opacity-90 transition duration-300 flex items-center justify-center"
           onClick={() => onBuy(product, paymentMethod)}
         >
